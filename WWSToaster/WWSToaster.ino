@@ -53,9 +53,9 @@ void setup()
 
   if (mqtt.initialize())
   {
-    mqtt.connect("MQTT1234Lorenzo", "", "");
-    //mqtt.subscribe("arduinotopic");
-    //mqtt.OUT->println("Connected & Subscribed...");
+    mqtt.connect("WWSToaster-00", "atm", "atm");
+    // mqtt.subscribe("sendeep");
+    // mqtt.OUT->println(F("Connected & Subscribed..."));
   }
   else
   {
@@ -252,9 +252,9 @@ void loop()
   if (mqtt.isConnected())
   {
     k=0;
-    len = sprintf((char *)msg, "%u", count++);
+    len = sprintf((char *)msg, "%u", 65);
     msg[len] = '\0';
-    mqtt.publish("sandeep", msg, 0);
+    mqtt.publish("gps", msg, 0);
   }
   if (k < 5)
     mqtt.loop();
