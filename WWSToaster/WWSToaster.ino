@@ -245,19 +245,21 @@ void setup()
 //   }
 // }
 
-int i = 0;
+int k = 0;
 void loop()
 {
-  i++;
+  k++;
   if (mqtt.isConnected())
   {
+    k=0;
     len = sprintf((char *)msg, "%u", count++);
     msg[len] = '\0';
     mqtt.publish("sandeep", msg, 0);
   }
-  if (i < 10)
+  if (k < 5)
     mqtt.loop();
-  
+  else
+    mqtt.disconnect();
 
   delay(1000);
 }

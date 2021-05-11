@@ -66,12 +66,12 @@ bool SIM8000::initModem() {
 };
 
 bool SIM8000::initNetwork() {
-  // if (this->mode == 0) { //MODE = 0
-  //   if (sendATcommand("AT+CIPMODE=0\r", "OK", 1000) == 0) return false;
-  // }
-  // else {    // MODE = 1
-  //   if (sendATcommand("AT+CIPMODE=1\r", "OK", 1000) == 0) return false;
-  // }
+  if (this->mode == 0) { //MODE = 0
+    if (sendATcommand("AT+CIPMODE=0\r", "OK", 1000) == 0) return false;
+  }
+  else {    // MODE = 1
+    if (sendATcommand("AT+CIPMODE=1\r", "OK", 1000) == 0) return false;
+  }
   if (sendATcommand("AT+CIPSRIP=0\r", "OK", 1000) == 0) return false;
   if (sendATcommand("AT+CGATT?\r", "+CGATT: 1", 5000) == 0) return false;
   if (sendATcommand("AT+CIPSTATUS\r", "INITIAL", 5000) == 0) return false;
@@ -86,7 +86,7 @@ bool SIM8000::initGPRS() {
   if (sendATcommand("AT+CIICR", "OK", 30000)  == 0 ) return false;
   if (sendATcommand("AT+CIPSTATUS\r", "GPRSACT", 500)  == 0 ) return false;
   if (sendATcommand("AT+CIFSR\r", ".", 10000)  == 0 ) return false;
-  delay(1000);
+  delay(5000);
   if (sendATcommand("AT+CIPSTATUS\r", "IP STATUS", 2000)  == 0 ) return false;
 
   OUT->println(F("GPRS Initialized..."));
@@ -108,7 +108,7 @@ bool SIM8000::startTCP(char * servername, int port) {
 bool SIM8000::closeTCP() {
   char str[100];
   memset(str, 0, sizeof(str));
-  sprintf((char*)str, "AT+CIPCLOSE");
+  sprintf((char*)str, "AT+CIPSHUT");
   //str[strlen(str)] = '\0';
   if (sendATcommand(str, "CLOSE OK", 30000)  == 0 ) return false;
   OUT->print(F("TCP Connection closed"));
