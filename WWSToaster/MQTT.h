@@ -25,8 +25,8 @@ class MQTT
         unsigned short MQTTPasswordLength;
         unsigned short MQTTTopicLength;     
 
-        const char * MQTTProtocolName = "MQTT";
-        const char MQTTLVL = 0x04;
+        const char * MQTTProtocolName = "MQIsdp";
+        const char MQTTLVL = 0x03;
         const char MQTTFlags = 0xC2;
         const unsigned int MQTTKeepAlive = 60;
         
@@ -50,4 +50,3 @@ class MQTT
         void serialEvent();
         
 };
-

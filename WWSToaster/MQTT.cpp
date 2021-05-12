@@ -4,7 +4,6 @@
 #include "MQTT.h"
 
 char topic[100];
-char message[4000];
 uint8_t i = 0;
 extern SoftwareSerial Serial1;
 
@@ -22,7 +21,7 @@ bool MQTT::initialize()
 
     if (!sim800.initialize(1, this->OUT))
         return false;
-    return sim800.startTCP("IP HERE", 1883);
+    return sim800.startTCP("93.63.173.7", 1883);
     // return sim800.startTCP("broker.emqx.io",1883);
 }
 
@@ -92,9 +91,9 @@ bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const cha
 bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 {
     OUT->println(F("Publishing data..."));
-    char topic[100], packetid[100], str1[2000], str2[2000];
+    char topic[100], packetid[100], str1[500], str2[500], message[500];
 
-    int datalength = 0, topiclength = 0, packetidlength = 0, X = 0;
+    int datalength = 0, topiclength = 0, messagelength=0, packetidlength = 0, X = 0;
     unsigned char encodedByte;
 
     topiclength = sprintf((char *)topic, MQTTTopic);
@@ -109,7 +108,7 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
     }
     //str1[datalength] = '\0';
     datalength = sprintf((char *)str2, "%s%s", str1, MQTTMessage);
-    //str2[datalength] = '\0';
+    str2[datalength] = '\0';
     OUT->print(F("Datalength = "));
     OUT->println(datalength);
     OUT->print(F("str = "));
@@ -142,6 +141,9 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
         Serial1.print(packetid);
     }
 
+    messagelength = sprintf((char *)message, MQTTMessage);
+    Serial1.write(messagelength >> 8);
+    Serial1.write(messagelength & 0xFF);
     Serial1.print(MQTTMessage);
 }
 
