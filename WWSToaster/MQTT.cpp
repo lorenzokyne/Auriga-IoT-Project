@@ -3,7 +3,6 @@
 #include "Arduino.h"
 #include "MQTT.h"
 
-char topic[100];
 uint8_t i = 0;
 extern SoftwareSerial Serial1;
 
@@ -22,7 +21,6 @@ bool MQTT::initialize()
     if (!sim800.initialize(1, this->OUT))
         return false;
     return sim800.startTCP("93.63.173.7", 1883);
-    // return sim800.startTCP("broker.emqx.io",1883);
 }
 
 bool MQTT::isConnected()
@@ -132,8 +130,9 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 
     Serial1.write(topiclength >> 8);
     Serial1.write(topiclength & 0xFF);
-    Serial1.write(topic);
-
+    Serial1.print(topic);
+    OUT->print(F("topic = "));
+    OUT->println(topic);
     if (qos > 0)
     {
         Serial1.write(packetidlength >> 8);
@@ -142,9 +141,11 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
     }
 
     messagelength = sprintf((char *)message, MQTTMessage);
-    Serial1.write(messagelength >> 8);
-    Serial1.write(messagelength & 0xFF);
     Serial1.print(MQTTMessage);
+
+    OUT->print(F("message = "));
+    OUT->println(MQTTMessage);
+    return false;
 }
 
 bool MQTT::subscribe(char *MQTTTopic)

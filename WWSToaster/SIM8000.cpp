@@ -27,6 +27,7 @@ bool SIM8000::initialize(uint8_t mode, Stream *out)
   Serial1.begin(9600);  
   uint8_t retryCount = 0;
   this->mode = mode;
+  while(!checkNetwork()){delay(100);}
   if (!initModem()) {
     OUT->println(F("Modem initialize failed.."));
     return false;
@@ -58,7 +59,7 @@ bool SIM8000::initModem() {
 
   if (sendATcommand("ATE0\r", "OK", 1000) == 0) return false;
   if (sendATcommand("AT+CFUN?\r", "+CFUN: 1", 1000) == 0) return false;
-  if (sendATcommand("AT+CREG?\r", "+CREG: 0,1", 1000) == 0) return false;
+  if (!checkNetwork()) return false;
 #ifdef debug
   OUT->println(F("Modem initialized successfully..."));
 #endif
@@ -132,7 +133,8 @@ short int SIM8000::getMode() {
 }
 
 bool SIM8000::checkNetwork() {
-    
+  if (sendATcommand("AT+CREG?\r", "+CREG: 0,1", 1000) == 0) return false;
+  return true;
 };
 
 bool SIM8000::checkGPRS() {
