@@ -1,22 +1,24 @@
 #include <SoftwareSerial.h>
-#include "MQTT.h"
-#include "sensors.h"
+#include "Libraries/MQTT.h"
+#include "Libraries/sensors.h"
 #include "Entities/Microphone.h"
+#include "Entities/Brightness.h"
+#include "Entities/Temperature.h"
 
-const int SIM_RX_PIN = 7;
-const int SIM_TX_PIN = 8;
-
-unsigned long count = 0;
-int len;
-
-extern SoftwareSerial Serial1;
-MQTT mqtt(Serial);
-
+//Environment vars
+const char* SERVER_ADDRESS = "93.63.163.7";
+const int SERVER_PORT = 1883;
 const char *clientName = "WWSToaster-00";
 const char *username = "atm";
 const char *password = "atm";
 
-Microphone mic(BIG_SOUND_AO_PIN);
+extern SoftwareSerial Serial1;
+MQTT mqtt(Serial);
+
+//Sensors instances
+Microphone microphone(BIG_SOUND_AO_PIN);
+Brightness brightness(PHOTO_RES_PIN);
+Temperature temperature(DHT11_PIN);
 
 void publish(char *topic, char *sensorValue, int QoS = 0)
 {
@@ -37,28 +39,16 @@ void loop()
   delay(5000);
   if (mqtt.isConnected())
   {
-    // float temperature;
-    // float humidity;
-    // char temp[5];
-    // getTempHumidity(&temperature, &humidity);
-    // int tempLen = snprintf((char *)temp, 5,"%f", temperature);
-    // temp[tempLen] = '\0';
-    // mqtt.OUT->println(temp);
-    // mqtt.publish("atm/temperature/value", temp, 0);
-    // microphone(value);
-    mic.setValue();
-    publish(mic.getTopic(), mic.getValue());
-    // publish("atm/darkness/value",brightness());
-    // publish("atm/microphone/value",microphone());
-    // publish("atm/microphone/value",microphone());
+    microphone.measureValue();
+    publish(microphone.getTopic(), microphone.getValue());
+    brightness.measureValue();
+    publish(brightness.getTopic(), brightness.getValue());
+    temperature.measureValue();
+    publish(temperature.getTopic(), temperature.getValue());
+    publish(temperature.humidityTopic, temperature.getHumidity());
+    //TODO OTHER SENSORS
   }
   mqtt.loop();
-  // else
-  // {
-  //   initConnection();
-  // }
-
-  delay(1000);
 }
 
 void serialEvent1()

@@ -62,7 +62,7 @@
 // //     mySerial.println("AT+CIFSR");
 // //     updateSerial();
 // //     delay(5000);
-// //     // mySerial.println("AT+CIPSTART=\"TCP\",\"93.63.173.7\",\"1883\"");
+// //     // mySerial.println("AT+CIPSTART=\"TCP\",\"IP HERE\",\"1883\"");
 // //     mySerial.println("AT+CIPSTART=\"TCP\",\"test.mosquitto.org\",\"1883\"");
 // //     updateSerial();
 // //     delay(3000);

@@ -20,7 +20,7 @@ bool MQTT::initialize()
 
     if (!sim800.initialize(1, this->OUT))
         return false;
-    return sim800.startTCP("93.63.173.7", 1883);
+    return sim800.startTCP(SERVER_ADDRESS, SERVER_PORT);
 }
 
 bool MQTT::isConnected()

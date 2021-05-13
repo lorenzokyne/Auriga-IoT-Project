@@ -1,27 +1,26 @@
-#include <dht_nonblocking.h>
+
 // #include <Wire.h>
 // #include <SoftwareSerial.h>
 // #include <TinyGPS.h>
 
-#define DHT_SENSOR_TYPE DHT_TYPE_11
 
 //SENSORS PIN
 const int DHT11_PIN = 2;
-// const int GPS_RX_PIN = 4;
-// const int GPS_TX_PIN = 3;
-// const int RELAY_PIN = 9;
+const int GPS_RX_PIN = 4;
+const int GPS_TX_PIN = 3;
+const int SIM_RX_PIN = 7;
+const int SIM_TX_PIN = 8;
+const int RELAY_PIN = 9;
 const int PHOTO_RES_PIN = A0;
-// const int LH_MAGNETIC_AO_PIN = A1;
+const int LH_MAGNETIC_AO_PIN = A1;
 const int BIG_SOUND_AO_PIN = A2;
-// const int GYRO_SDA_PIN = A4;
-// const int GYRO_SCL_PIN = A5;
+const int GYRO_SDA_PIN = A4;
+const int GYRO_SCL_PIN = A5;
 
 // // //GYRO
 // // const int MPU_addr = 0x68; // I2C address of the MPU-6050
 // // int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
 
-DHT_nonblocking dht_sensor(DHT11_PIN, DHT_SENSOR_TYPE);
-int brightnessAnalogValue = 0;
 // int soundAnalogValue = 0;
 // int linearHallValue = 0;
 // float analogValue;
@@ -31,10 +30,11 @@ int brightnessAnalogValue = 0;
 // // TinyGPS gps;
 // float lat = 0, lon = 0; // create variable for latitude and longitude
 
-char* brightness()
+char *brightnessTest()
 {
     // BRIGHTNESS SENSOR
     // 0 = LIGHT - 1000 = DARKNESS
+    int brightnessAnalogValue = 0;
     char brightnessStr[5];
     brightnessAnalogValue = analogRead(PHOTO_RES_PIN);
     int StrLen = sprintf((char *)brightnessStr, "%d", brightnessAnalogValue);
@@ -42,7 +42,7 @@ char* brightness()
     return brightnessStr;
 }
 
-void getTempHumidity(float *temperature, float *humidity)
+void tempHumidityTest(float *temperature, float *humidity)
 {
     // TEMP AND HUMIDITY SENSOR °C
     if (dht_sensor.measure(temperature, humidity))
@@ -135,7 +135,7 @@ void getTempHumidity(float *temperature, float *humidity)
 //     return linearHallValue;
 // }
 
-void microphone(char microphoneStr[5])
+void microphoneTest(char microphoneStr[5])
 {
     // MICROPHONE SENSOR
     int microphoneValue = analogRead(BIG_SOUND_AO_PIN); // Read the value of the analog interface A0 assigned to digitalValue

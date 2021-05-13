@@ -7,7 +7,7 @@ class Microphone : Sensor
 public:
     Microphone(int pin) : Sensor("atm/microphone/value", pin){};
 
-    void setValue()
+    void measureValue()
     {
         // MICROPHONE SENSOR
         int microphoneValue = analogRead(this->pin); // Read the value of the analog interface A0 assigned to digitalValue

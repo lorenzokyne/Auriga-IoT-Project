@@ -11,7 +11,7 @@ public:
         this->topic = topic;
         this->pin = pin;
     };
-    virtual void setValue();
+    virtual void measureValue();
     virtual char *getValue();
     virtual char *getTopic();
 };
