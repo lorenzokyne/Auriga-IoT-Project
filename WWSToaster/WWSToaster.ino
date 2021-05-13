@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
 #include "MQTT.h"
 #include "sensors.h"
+#include "Entities/Microphone.h"
 
 const int SIM_RX_PIN = 7;
 const int SIM_TX_PIN = 8;
@@ -15,14 +16,16 @@ const char *clientName = "WWSToaster-00";
 const char *username = "atm";
 const char *password = "atm";
 
-void publish(char* topic, char* sensorValue, int QoS = 0){
+Microphone mic(BIG_SOUND_AO_PIN);
+
+void publish(char *topic, char *sensorValue, int QoS = 0)
+{
   mqtt.publish(topic, sensorValue, QoS);
 }
 
 void setup()
 {
   Serial.begin(9600);
-
   initConnection();
 
   // GPS
@@ -42,10 +45,9 @@ void loop()
     // temp[tempLen] = '\0';
     // mqtt.OUT->println(temp);
     // mqtt.publish("atm/temperature/value", temp, 0);
-    char value[5];
-    microphone(value);
-    mqtt.OUT->println(value);
-    mqtt.publish("atm/microphone/value", value, 0);
+    // microphone(value);
+    mic.setValue();
+    publish(mic.getTopic(), mic.getValue());
     // publish("atm/darkness/value",brightness());
     // publish("atm/microphone/value",microphone());
     // publish("atm/microphone/value",microphone());

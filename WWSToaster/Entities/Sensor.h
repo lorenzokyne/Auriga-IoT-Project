@@ -1,12 +1,17 @@
+class Sensor
+{
+protected:
+    char *value = "";
+    char *topic;
+    int pin;
 
-class Sensor {
-    private:
-        char* topic;
-        char* value = "";
-    public:
-        Sensor(char* topicValue){
-            topic = topicValue;
-        };
-        virtual void setValue();
-        virtual char* getValue();
+public:
+    Sensor(char *topic, int pin)
+    {
+        this->topic = topic;
+        this->pin = pin;
+    };
+    virtual void setValue();
+    virtual char *getValue();
+    virtual char *getTopic();
 };
