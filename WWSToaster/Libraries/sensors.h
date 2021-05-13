@@ -3,7 +3,6 @@
 // #include <SoftwareSerial.h>
 // #include <TinyGPS.h>
 
-
 //SENSORS PIN
 const int DHT11_PIN = 2;
 const int GPS_RX_PIN = 4;

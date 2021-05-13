@@ -19,7 +19,7 @@ public:
         // TEMP AND HUMIDITY SENSOR °C
         float temp;
         float hum;
-        if (dht_sensor.measure(&temp, &hum){
+        if (this->dht_sensor.measure(&temp, &hum){
             int len = sprintf(this->value, "%f", temp);
             this->value[len] = '\0';
             len = sprintf(this->humidity, "%f", hum);

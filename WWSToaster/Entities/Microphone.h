@@ -18,7 +18,8 @@ public:
     {
         return this->value;
     }
-    char *getTopic(){
+    char *getTopic()
+    {
         return this->topic;
     }
 };

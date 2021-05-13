@@ -91,7 +91,7 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
     OUT->println(F("Publishing data..."));
     char topic[100], packetid[100], str1[500], str2[500], message[500];
 
-    int datalength = 0, topiclength = 0, messagelength=0, packetidlength = 0, X = 0;
+    int datalength = 0, topiclength = 0, messagelength = 0, packetidlength = 0, X = 0;
     unsigned char encodedByte;
 
     topiclength = sprintf((char *)topic, MQTTTopic);
