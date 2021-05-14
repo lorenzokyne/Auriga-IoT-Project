@@ -1,4 +1,7 @@
-#include "Sensor.h"
+#ifndef SENSOR_H
+    #define SENSOR_H
+    #include "Sensor.h"
+#endif
 #include "Arduino.h"
 
 class Brightness : Sensor
@@ -13,7 +16,7 @@ public:
         // 0 = LIGHT - 1000 = DARKNESS
         int brightnessAnalogValue = analogRead(this->pin);
         int StrLen = sprintf((char *)this->value, "%d", brightnessAnalogValue);
-        brightnessStr[StrLen] = '\0';
+        this->value[StrLen] = '\0';
     }
 
     char *getValue()

@@ -1,4 +1,7 @@
-#include "Sensor.h"
+#ifndef SENSOR_H
+    #define SENSOR_H
+    #include "Sensor.h"
+#endif
 #include "Arduino.h"
 
 class Microphone : Sensor

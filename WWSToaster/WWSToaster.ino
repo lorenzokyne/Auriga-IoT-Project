@@ -1,9 +1,8 @@
 #include <SoftwareSerial.h>
-#include "Libraries/MQTT.h"
-#include "Libraries/sensors.h"
-#include "Entities/Microphone.h"
-#include "Entities/Brightness.h"
-#include "Entities/Temperature.h"
+#include "Libraries\MQTT.h"
+#include "Entities\Microphone.h"
+#include "Entities\Brightness.h"
+#include "Entities\Temperature.h"
 
 //Environment vars
 const char* SERVER_ADDRESS = "IP HERE";
@@ -39,13 +38,13 @@ void loop()
   delay(5000);
   if (mqtt.isConnected())
   {
-    microphone.measureValue();
-    publish(microphone.getTopic(), microphone.getValue());
-    brightness.measureValue();
-    publish(brightness.getTopic(), brightness.getValue());
-    temperature.measureValue();
-    publish(temperature.getTopic(), temperature.getValue());
-    publish(temperature.humidityTopic, temperature.getHumidity());
+    // microphone.measureValue();
+    // publish(microphone.getTopic(), microphone.getValue());
+    // brightness.measureValue();
+    // publish(brightness.getTopic(), brightness.getValue());
+    // temperature.measureValue();
+    // publish(temperature.getTopic(), temperature.getValue());
+    // publish((char*)temperature.humidityTopic, temperature.getHumidity());
     //TODO OTHER SENSORS
   }
   mqtt.loop();
