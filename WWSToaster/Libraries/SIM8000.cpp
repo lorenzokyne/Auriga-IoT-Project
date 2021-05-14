@@ -189,7 +189,7 @@ bool SIM8000::getIPAddress()
 void SIM8000::resetModem()
 {
 #ifdef debug
-  OUT->println(F("Resetting Modem.., please wait for 10 seconds.."));
+  OUT->println(F("Resetting Modem... please wait for 10 seconds.."));
 #endif
   digitalWrite(RESET_PIN, LOW);
   delay(100);

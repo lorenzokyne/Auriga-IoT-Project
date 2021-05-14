@@ -14,17 +14,18 @@ const int GYRO_SCL_PIN = A5;
 class Sensor
 {
 protected:
-    char *value = "";
+    char value[16];
     char *topic;
     int pin;
 
 public:
     Sensor(char *topic, int pin)
     {
+        this->topic = (char*)malloc(sizeof(char)*strlen(topic));
         this->topic = topic;
         this->pin = pin;
     };
     virtual void measureValue();
-    virtual char *getValue();
-    virtual char *getTopic();
+    virtual char* getValue();
+    virtual char* getTopic();
 };

@@ -15,7 +15,7 @@ public:
         // BRIGHTNESS SENSOR
         // 0 = LIGHT - 1000 = DARKNESS
         int brightnessAnalogValue = analogRead(this->pin);
-        int StrLen = sprintf((char *)this->value, "%d", brightnessAnalogValue);
+        int StrLen = sprintf(this->value, "%d", brightnessAnalogValue);
         this->value[StrLen] = '\0';
     }
 

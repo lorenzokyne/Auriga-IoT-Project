@@ -5,7 +5,7 @@
 #include "Entities\Temperature.h"
 
 //Environment vars
-const char* SERVER_ADDRESS = "IP HERE";
+const char* SERVER_ADDRESS = "93.63.173.7";
 const int SERVER_PORT = 1883;
 const char *clientName = "WWSToaster-00";
 const char *username = "atm";
@@ -40,11 +40,12 @@ void loop()
   {
     microphone.measureValue();
     publish(microphone.getTopic(), microphone.getValue());
+    delay(200);
     brightness.measureValue();
     publish(brightness.getTopic(), brightness.getValue());
-    temperature.measureValue();
-    publish(temperature.getTopic(), temperature.getValue());
-    publish((char*)temperature.humidityTopic, temperature.getHumidity());
+    // temperature.measureValue();
+    // publish(temperature.getTopic(), temperature.getValue());
+    // publish((char*)temperature.humidityTopic, temperature.getHumidity());
     //TODO OTHER SENSORS
   }
   mqtt.loop();
