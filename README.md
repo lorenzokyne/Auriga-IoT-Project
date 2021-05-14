@@ -1,7 +1,7 @@
 # Auriga.WWSToaster
 A simple arduino project for a prototype of IoT security device for ATMs.
 
-##Devices
+## Devices
 - [Modulo GSM GSM GPRS SIM800L](https://www.amazon.it/gp/product/B07X2634ZQ/ref=ox_sc_act_title_1?smid=A2BQVM41SWSLKR&psc=1)
 - [Aideepen 2PCS GY-GPS6MV2 NEO-6M Modulo di Posizione Modulo GPS](https://www.amazon.it/gp/product/B08CZSL193/ref=ox_sc_act_title_2?smid=AUN6EYX254ETV&psc=1)
 - [AZDelivery Jumper Wire Cavetti](https://www.amazon.it/gp/product/B074P726ZR/ref=ox_sc_act_title_3?smid=A1X7QLRQH87QA3&psc=1)
