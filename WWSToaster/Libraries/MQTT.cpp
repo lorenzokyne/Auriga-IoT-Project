@@ -6,13 +6,17 @@
 uint8_t i = 0;
 extern SoftwareSerial Serial1;
 
-MQTT::MQTT(){
-
+MQTT::MQTT(char *server, int port)
+{
+    this->server = server;
+    this->port = port;
 };
 
-MQTT::MQTT(Stream &out)
+MQTT::MQTT(char *server, int port, Stream &out)
 {
     this->OUT = &out;
+    this->server = server;
+    this->port = port;
 };
 
 bool MQTT::initialize()
@@ -20,7 +24,7 @@ bool MQTT::initialize()
 
     if (!sim800.initialize(1, this->OUT))
         return false;
-    return sim800.startTCP(SERVER_ADDRESS, SERVER_PORT);
+    return sim800.startTCP(this->server, this->port);
 }
 
 bool MQTT::isConnected()

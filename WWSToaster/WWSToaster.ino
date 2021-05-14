@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-#include "Libraries\MQTT.h"
+#include <MQTT.h>
 #include "Entities\Microphone.h"
 #include "Entities\Brightness.h"
 #include "Entities\Temperature.h"
@@ -12,7 +12,7 @@ const char *username = "atm";
 const char *password = "atm";
 
 extern SoftwareSerial Serial1;
-MQTT mqtt(Serial);
+MQTT mqtt((char*)SERVER_ADDRESS, (int)SERVER_PORT, Serial);
 
 //Sensors instances
 Microphone microphone(BIG_SOUND_AO_PIN);
@@ -38,13 +38,13 @@ void loop()
   delay(5000);
   if (mqtt.isConnected())
   {
-    // microphone.measureValue();
-    // publish(microphone.getTopic(), microphone.getValue());
-    // brightness.measureValue();
-    // publish(brightness.getTopic(), brightness.getValue());
-    // temperature.measureValue();
-    // publish(temperature.getTopic(), temperature.getValue());
-    // publish((char*)temperature.humidityTopic, temperature.getHumidity());
+    microphone.measureValue();
+    publish(microphone.getTopic(), microphone.getValue());
+    brightness.measureValue();
+    publish(brightness.getTopic(), brightness.getValue());
+    temperature.measureValue();
+    publish(temperature.getTopic(), temperature.getValue());
+    publish((char*)temperature.humidityTopic, temperature.getHumidity());
     //TODO OTHER SENSORS
   }
   mqtt.loop();

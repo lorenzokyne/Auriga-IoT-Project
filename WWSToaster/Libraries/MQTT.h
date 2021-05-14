@@ -35,17 +35,20 @@ private:
     uint8_t packetType = 0;
     bool _isConnected = false;
 
+    char *server = "";
+    int port = 1883;
+
 public:
     Stream *OUT;
-    MQTT();
-    MQTT(Stream &out);
+    MQTT(char *server, int port);
+    MQTT(char *server, int port, Stream &out);
     bool initialize();
     bool isConnected();
     bool connect(const char *MQTTClientID, const char *MQTTUsername, const char *MQTTPassword);
     bool publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos);
     bool subscribe(char *MQTTTopic);
     bool disconnect();
-    bool MQTT::ping();
+    bool ping();
     void loop();
     void serialEvent();
 };
