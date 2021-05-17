@@ -9,15 +9,19 @@ class Gyroscope : Sensor
 {
 private:
     const int MPU_addr = 0x68; // I2C address of the MPU-6050
-    char *accelerometerValue;
+    uint8_t pinscl;
 
 public:
-    Gyroscope(int pin) : Sensor("atm/gyro/value", pin){};
-    const char *accelerometerTopic = "atm/gyro/acc";
-    
-    void measureValue()
+    Gyroscope(int pinsda, int pinscl) : Sensor("atm/gyro/value", pinsda)
     {
-        int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
+        this->pinscl = pinscl;
+    };
+    const char *accelerometerTopic = "atm/gyro/acc";
+
+    void measureValue(char* value)
+    {
+        
+        short AcX, AcY, AcZ, GyX, GyY, GyZ;
         Wire.begin();
         Wire.beginTransmission(MPU_addr);
         Wire.write(0x3B); // starting with register 0x3B (ACCEL_XOUT_H)
@@ -30,28 +34,12 @@ public:
         GyX = Wire.read() << 8 | Wire.read(); // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
         GyY = Wire.read() << 8 | Wire.read(); // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
         GyZ = Wire.read() << 8 | Wire.read(); // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
-        int StrLen = sprintf((char *)this->value, "%s%d %s%d %s%d", "GyX = ", GyX, "GyY = ", GyY, "GyZ = ", GyZ);
-        this->value[StrLen] = '\0';
-        StrLen = sprintf((char *)this->accelerometerValue, "%s%d %s%d %s%d", "AcX = ", AcX, "AcY = ", AcY, "AcZ = ", AcZ);
-        this->accelerometerValue[StrLen] = '\0';
-        delay(333);
-        int brightnessAnalogValue = analogRead(this->pin);
-        int StrLen = sprintf((char *)this->value, "%d", brightnessAnalogValue);
-        this->value[StrLen] = '\0';
-    }
-
-    char *getValue()
-    {
-        return this->value;
+        int StrLen = sprintf(value, "GyX=%dGyY=%dGyZ=%dAcX=%dAcY=%dAcZ=%d", GyX, GyY, GyZ, AcX, AcY, AcZ);
+        value[StrLen] = '\0';
     }
 
     char *getTopic()
     {
         return this->topic;
-    }
-
-    char *getAccelerometerValue()
-    {
-        return this->value;
     }
 };

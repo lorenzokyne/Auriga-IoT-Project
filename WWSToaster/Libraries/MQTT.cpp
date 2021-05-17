@@ -5,7 +5,7 @@
 
 uint8_t i = 0;
 extern SoftwareSerial Serial1;
-
+char topic[30], packetid[30], str1[200], str2[200], message[500];
 MQTT::MQTT(char *server, int port)
 {
     this->server = server;
@@ -93,7 +93,7 @@ bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const cha
 bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 {
     OUT->println(F("Publishing data..."));
-    char topic[100], packetid[100], str1[500], str2[500], message[500];
+    
 
     int datalength = 0, topiclength = 0, messagelength = 0, packetidlength = 0, X = 0;
     unsigned char encodedByte;
@@ -145,6 +145,7 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
     }
 
     messagelength = sprintf((char *)message, MQTTMessage);
+    message[messagelength] = '\0';
     Serial1.print(MQTTMessage);
 
     OUT->print(F("message = "));

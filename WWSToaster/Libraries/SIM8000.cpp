@@ -210,7 +210,7 @@ int8_t SIM8000::sendATcommand(char *ATcommand, char *expected_answer, unsigned i
 {
 
   uint8_t x = 0, answer = 0;
-  char response[500];
+  char response[300];
   unsigned long previous;
   char *str;
   memset(response, '\0', 100); // Initialize the string
@@ -251,7 +251,7 @@ int8_t SIM8000::sendATcommand(char *ATcommand, char *expected_answer, unsigned i
 char *SIM8000::sendATCommandResponse(char *ATcommand, unsigned int timeout)
 {
   unsigned long previous = millis();
-  char response[500];
+  char response[300];
   uint8_t index = 0;
   //while (Serial1.available())
   //  Serial1.read();

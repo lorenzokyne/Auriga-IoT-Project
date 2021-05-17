@@ -35,7 +35,7 @@ private:
     uint8_t packetType = 0;
     bool _isConnected = false;
 
-    char *server = "";
+    char *server;
     int port = 1883;
 
 public:
