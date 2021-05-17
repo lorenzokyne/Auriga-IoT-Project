@@ -45,7 +45,7 @@ public:
     bool initialize();
     bool isConnected();
     bool connect(const char *MQTTClientID, const char *MQTTUsername, const char *MQTTPassword);
-    bool publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos);
+    bool publish(const char *MQTTTopic, char *MQTTMessage, uint8_t qos);
     bool subscribe(char *MQTTTopic);
     bool disconnect();
     bool ping();

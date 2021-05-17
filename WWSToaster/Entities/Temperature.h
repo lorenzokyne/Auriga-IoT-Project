@@ -12,23 +12,15 @@ class Temperature : Sensor
 {
 
 public:
-    Temperature(int pin) : Sensor((char *)"atm/temperature/value", pin)
+    Temperature(int pin) : Sensor(pin)
     {
         dht_sensor.begin();
     };
-    const char *humidityTopic = "atm/temperature/humidity";
     void measureValue(char*value)
     {
         // TEMP AND HUMIDITY SENSOR °C
-        float temp = dht_sensor.readTemperature();
-        float hum = dht_sensor.readHumidity();
 
-        int len = sprintf(value, "%f,%f", temp+hum);
+        uint8_t len = sprintf(value, "%f,%f",  dht_sensor.readTemperature(),dht_sensor.readHumidity());
         value[len] = '\0';
-    }
-
-    char *getTopic()
-    {
-        return this->topic;
     }
 };

@@ -5,7 +5,6 @@
 
 uint8_t i = 0;
 extern SoftwareSerial Serial1;
-char topic[30], packetid[30], str1[200], str2[200], message[500];
 MQTT::MQTT(char *server, int port)
 {
     this->server = server;
@@ -48,7 +47,7 @@ bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const cha
     MQTTPasswordLength = strlen(MQTTPassword);
 
     datalength = MQTTProtocolNameLength + 2 + 4 + MQTTClientIDLength + 2 + MQTTUsernameLength + 2 + MQTTPasswordLength + 2;
-    OUT->print("Data Length :");
+    OUT->print(F("Data Length :"));
     OUT->println(datalength);
     X = datalength;
     do
@@ -90,31 +89,31 @@ bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const cha
     return false;
 }
 
-bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
+bool MQTT::publish(const char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 {
     OUT->println(F("Publishing data..."));
-    
+    char packetid[30], str1[50], message[150];
 
-    int datalength = 0, topiclength = 0, messagelength = 0, packetidlength = 0, X = 0;
+    uint8_t datalength = 0, topiclength = 0, messagelength = 0, packetidlength = 0, X = 0;
     unsigned char encodedByte;
 
-    topiclength = sprintf((char *)topic, MQTTTopic);
+    // topiclength = sprintf((char *)topic, MQTTTopic);
+    topiclength = strlen(MQTTTopic);
     if (qos > 0)
     {
         packetidlength = sprintf((char *)packetid, "PACKETID");
-        datalength = sprintf((char *)str1, "%s%s", topic, packetid);
+        datalength = sprintf((char *)str1, "%s%s", MQTTTopic, packetid);
     }
     else
     {
-        datalength = sprintf((char *)str1, "%s", topic);
+        datalength = sprintf((char *)str1, "%s", MQTTTopic);
     }
     //str1[datalength] = '\0';
-    datalength = sprintf((char *)str2, "%s%s", str1, MQTTMessage);
-    str2[datalength] = '\0';
+    datalength = strlen(str1)+strlen(MQTTMessage);
     OUT->print(F("Datalength = "));
     OUT->println(datalength);
     OUT->print(F("str = "));
-    OUT->println(str2);
+    OUT->println(MQTTMessage);
 
     Serial1.write(0x30 + (qos * 2)); //QOS = 1
     delay(100);
@@ -134,9 +133,9 @@ bool MQTT::publish(char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 
     Serial1.write(topiclength >> 8);
     Serial1.write(topiclength & 0xFF);
-    Serial1.print(topic);
+    Serial1.print(MQTTTopic);
     OUT->print(F("topic = "));
-    OUT->println(topic);
+    OUT->println(MQTTTopic);
     if (qos > 0)
     {
         Serial1.write(packetidlength >> 8);
@@ -205,8 +204,7 @@ void MQTT::loop()
 
 void MQTT::serialEvent()
 {
-    OUT->println("");
-    OUT->println("Begin");
+    OUT->println(F("\nBegin"));
     int X;
     unsigned char code;
     unsigned char encodedByte;
@@ -219,9 +217,9 @@ void MQTT::serialEvent()
         code = Serial1.read();
 
         OUT->print((char)code);
-        OUT->print(",");
+        OUT->print(F(","));
         OUT->print(code, HEX);
-        OUT->print(",");
+        OUT->print(F(","));
         OUT->println(code, DEC);
 
         if (code == 0x10)
@@ -241,25 +239,25 @@ void MQTT::serialEvent()
             if (code == 0x00)      //Successfully Connected to MQTT broker
             {
                 _isConnected = true;
-                OUT->println("Successfully Connected to MQTT broker");
+                OUT->println(F("Successfully Connected to MQTT broker"));
             }
             else
             {
                 Serial.println(code);
                 if (code == 0x01)
-                    OUT->println("Connection Refused, unacceptable protocol version");
+                    OUT->println(F("Connection Refused, unacceptable protocol version"));
                 if (code == 0x02)
-                    OUT->println("Connection Refused, identifier rejected");
+                    OUT->println(F("Connection Refused, identifier rejected"));
                 if (code == 0x03)
-                    OUT->println("Connection Refused, Server unavailable");
+                    OUT->println(F("Connection Refused, Server unavailable"));
                 if (code == 0x04)
-                    OUT->println("Connection Refused, bad user name or password");
+                    OUT->println(F("Connection Refused, bad user name or password"));
                 if (code == 0x05)
-                    OUT->println("Connection Refused, not authorized");
+                    OUT->println(F("Connection Refused, not authorized"));
 
                 _isConnected = false;
-                OUT->print("Unable to connect to MQTT broker");
-                OUT->print(", CONNACK received :");
+                OUT->print(F("Unable to connect to MQTT broker"));
+                OUT->print(F(", CONNACK received :"));
                 OUT->print(code, HEX);
             }
         }
@@ -271,9 +269,9 @@ void MQTT::serialEvent()
             code = Serial1.read(); //Byte4 of SUBACK
             code = Serial1.read(); //Byte5 of SUBACK
             if (code == 0x00 || code == 0x01 || code == 0x02)
-                OUT->println("Successfully subscribed..");
+                OUT->println(F("Successfully subscribed.."));
             else // When return is 0x80
-                OUT->println("Unable to subscribe..");
+                OUT->println(F("Unable to subscribe.."));
         }
         else if (code == 0xD0 || code == 0xC0)
         {
@@ -295,7 +293,7 @@ void MQTT::serialEvent()
         }
         else if (code == 0x30) //Message Received
         {
-            OUT->println("Message Begin...");
+            OUT->println(F("Message Begin..."));
 
             do
             {
@@ -304,7 +302,7 @@ void MQTT::serialEvent()
                 multiplier = multiplier * 128;
                 if (multiplier > 2097152) // 2097152 = 128 * 128 * 128
                 {
-                    OUT->println("Exception while calculating the Messge Length");
+                    OUT->println(F("Exception while calculating the Messge Length"));
                     break;
                 }
             } while ((encodedByte & 128) != 0);
@@ -315,18 +313,18 @@ void MQTT::serialEvent()
             code = Serial1.read(); // Topic Len LSB
             //OUT->print((char)code);OUT->print(",");OUT->println(code,HEX);
             topiclen = code;
-            OUT->print("Msg Length:");
+            OUT->print(F("Msg Length:"));
             OUT->println(msglen, DEC);
-            OUT->print("Topic Length:");
+            OUT->print(F("Topic Length:"));
             OUT->println(topiclen, DEC);
-            OUT->print("Topic : ");
+            OUT->print(F("Topic : "));
             uint8_t i = 0;
             for (i = 0; i < topiclen; i++)
             {
                 OUT->print((char)Serial1.read());
             }
 
-            OUT->print("\nMessage :");
+            OUT->print(F("\nMessage :"));
 
             int count = 0;
             while (Serial1.available())
@@ -335,27 +333,27 @@ void MQTT::serialEvent()
                 OUT->print((char)code);
                 count++;
             }
-            OUT->print("\nMessage Length = ");
+            OUT->print(F("\nMessage Length = "));
             OUT->print(count);
-            OUT->println("\nMessage End...");
+            OUT->println(F("\nMessage End..."));
         }
         else if (code == 0x32)
         {
-            OUT->println("Message packet begin");
+            OUT->println(F("Message packet begin"));
             while (Serial1.available())
             {
                 code = Serial1.read();
                 OUT->print(code);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->print(code, HEX);
                 OUT->print(",");
                 OUT->println((char)code);
             }
-            OUT->println("Message packet end");
+            OUT->println(F("Message packet end"));
         }
         else if (code == 0x34)
         {
-            OUT->println("Message packet begin");
+            OUT->println(F("Message packet begin"));
             while (Serial1.available())
             {
                 code = Serial1.read();
@@ -365,8 +363,8 @@ void MQTT::serialEvent()
                 OUT->print(",");
                 OUT->println((char)code);
             }
-            OUT->println("Message packet end");
+            OUT->println(F("Message packet end"));
         }
     }
-    OUT->println("End\n");
+    OUT->println(F("End\n"));
 }
