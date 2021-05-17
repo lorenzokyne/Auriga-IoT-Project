@@ -8,7 +8,7 @@ SoftwareSerial Serial1(8, 7);
 
 bool SIM8000::checkModem()
 {
-  if (sendATcommand("AT\r", "OK", 500) == 0)
+  if (sendATcommand((char*)"AT\r", (char*)"OK", 500) == 0)
     return false;
   return true;
 };
@@ -69,9 +69,9 @@ bool SIM8000::initModem()
     tryCount++;
   }
 
-  if (sendATcommand("ATE0\r", "OK", 1000) == 0)
+  if (sendATcommand((char*)"ATE0\r", (char*)"OK", 1000) == 0)
     return false;
-  if (sendATcommand("AT+CFUN?\r", "+CFUN: 1", 1000) == 0)
+  if (sendATcommand((char*)"AT+CFUN?\r", (char*)"+CFUN: 1", 1000) == 0)
     return false;
   if (!checkNetwork())
     return false;
@@ -85,19 +85,19 @@ bool SIM8000::initNetwork()
 {
   if (this->mode == 0)
   { //MODE = 0
-    if (sendATcommand("AT+CIPMODE=0\r", "OK", 1000) == 0)
+    if (sendATcommand((char*)"AT+CIPMODE=0\r", (char*)"OK", 1000) == 0)
       return false;
   }
   else
   { // MODE = 1
-    if (sendATcommand("AT+CIPMODE=1\r", "OK", 1000) == 0)
+    if (sendATcommand((char*)"AT+CIPMODE=1\r", (char*)"OK", 1000) == 0)
       return false;
   }
-  if (sendATcommand("AT+CIPSRIP=0\r", "OK", 1000) == 0)
+  if (sendATcommand((char*)"AT+CIPSRIP=0\r", (char*)"OK", 1000) == 0)
     return false;
-  if (sendATcommand("AT+CGATT?\r", "+CGATT: 1", 5000) == 0)
+  if (sendATcommand((char*)"AT+CGATT?\r", (char*)"+CGATT: 1", 5000) == 0)
     return false;
-  if (sendATcommand("AT+CIPSTATUS\r", "INITIAL", 5000) == 0)
+  if (sendATcommand((char*)"AT+CIPSTATUS\r", (char*)"INITIAL", 5000) == 0)
     return false;
 
   OUT->println(F("Network Initialized..."));
@@ -106,18 +106,18 @@ bool SIM8000::initNetwork()
 
 bool SIM8000::initGPRS()
 {
-  if (sendATcommand("AT+CSTT=\"mobile.vodafone.it\",\"\",\"\"\r", "OK", 30000) == 0)
+  if (sendATcommand((char*)"AT+CSTT=\"mobile.vodafone.it\",\"\",\"\"\r", (char*)"OK", 30000) == 0)
     return false;
-  if (sendATcommand("AT+CIPSTATUS\r", "START", 2000) == 0)
+  if (sendATcommand((char*)"AT+CIPSTATUS\r", (char*)"START", 2000) == 0)
     return false;
-  if (sendATcommand("AT+CIICR", "OK", 30000) == 0)
+  if (sendATcommand((char*)"AT+CIICR", (char*)"OK", 30000) == 0)
     return false;
-  if (sendATcommand("AT+CIPSTATUS\r", "GPRSACT", 500) == 0)
+  if (sendATcommand((char*)"AT+CIPSTATUS\r", (char*)"GPRSACT", 500) == 0)
     return false;
-  if (sendATcommand("AT+CIFSR\r", ".", 10000) == 0)
+  if (sendATcommand((char*)"AT+CIFSR\r", (char*)".", 10000) == 0)
     return false;
   delay(5000);
-  if (sendATcommand("AT+CIPSTATUS\r", "IP STATUS", 2000) == 0)
+  if (sendATcommand((char*)"AT+CIPSTATUS\r", (char*)"IP STATUS", 2000) == 0)
     return false;
 
   OUT->println(F("GPRS Initialized..."));
@@ -130,7 +130,7 @@ bool SIM8000::startTCP(char *servername, int port)
   memset(str, 0, sizeof(str));
   sprintf((char *)str, "AT+CIPSTART=\"TCP\",\"%s\",\"%d\"", servername, port);
   //str[strlen(str)] = '\0';
-  if (sendATcommand(str, "OK\r\n\r\nCONNECT", 30000) == 0)
+  if (sendATcommand(str, (char*)"OK\r\n\r\nCONNECT", 30000) == 0)
     return false;
   OUT->print(F("TCP Connection opened in mode ="));
   OUT->println(this->mode);
@@ -143,7 +143,7 @@ bool SIM8000::closeTCP()
   memset(str, 0, sizeof(str));
   sprintf((char *)str, "AT+CIPSHUT");
   //str[strlen(str)] = '\0';
-  if (sendATcommand(str, "CLOSE OK", 30000) == 0)
+  if (sendATcommand(str, (char*)"CLOSE OK", 30000) == 0)
     return false;
   OUT->print(F("TCP Connection closed"));
   return true;
@@ -152,10 +152,10 @@ bool SIM8000::closeTCP()
 bool SIM8000::setMode(uint8_t mode)
 {
   if (mode == 0)
-    if (sendATcommand("AT+CIPMODE=0\r", "OK", 1000) == 0)
+    if (sendATcommand((char*)"AT+CIPMODE=0\r", (char*)"OK", 1000) == 0)
       return false;
     else if (mode == 1)
-      if (sendATcommand("AT+CIPMODE=1\r", "OK", 1000) == 0)
+      if (sendATcommand((char*)"AT+CIPMODE=1\r",(char*)"OK", 1000) == 0)
         return false;
 
   this->mode = mode;
@@ -169,7 +169,7 @@ short int SIM8000::getMode()
 
 bool SIM8000::checkNetwork()
 {
-  if (sendATcommand("AT+CREG?\r", "+CREG: 0,1", 1000) == 0)
+  if (sendATcommand((char*)"AT+CREG?\r", (char*)"+CREG: 0,1", 1000) == 0)
     return false;
   return true;
 };
@@ -199,7 +199,8 @@ void SIM8000::resetModem()
 
 char *SIM8000::getTCPStatus()
 {
-  return sendATCommandResponse("AT+CIPSTATUS\r", 1000);
+  char response[500];
+  return sendATCommandResponse((char*)"AT+CIPSTATUS\r", 1000, response);
 }
 
 void SIM8000::setAPN(char *APN, char *username, char *password){
@@ -248,10 +249,9 @@ int8_t SIM8000::sendATcommand(char *ATcommand, char *expected_answer, unsigned i
   return answer;
 }
 
-char *SIM8000::sendATCommandResponse(char *ATcommand, unsigned int timeout)
+char *SIM8000::sendATCommandResponse(char *ATcommand, unsigned int timeout, char* response)
 {
   unsigned long previous = millis();
-  char response[300];
   uint8_t index = 0;
   //while (Serial1.available())
   //  Serial1.read();

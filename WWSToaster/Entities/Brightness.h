@@ -8,7 +8,7 @@ class Brightness : Sensor
 {
 
 public:
-    Brightness(int pin) : Sensor("atm/darkness/value", pin){};
+    Brightness(int pin) : Sensor((char*)"atm/darkness/value", pin){};
 
     void measureValue(char*value)
     {

@@ -3,24 +3,24 @@
 // #include "Entities\Microphone.h"
 // #include "Entities\Brightness.h"
 #include "Entities\Temperature.h"
-#include "Entities\Gyroscope.h"
+// #include "Entities\Gyroscope.h"
 
 //Environment vars
-const char* SERVER_ADDRESS = "93.63.173.7";
+const char *SERVER_ADDRESS = "93.63.173.7";
 const int SERVER_PORT = 1883;
 const char *clientName = "WWSToaster-00";
 const char *username = "atm";
 const char *password = "atm";
-    char sensorValue[40];
+char sensorValue[40];
 
 extern SoftwareSerial Serial1;
-MQTT mqtt((char*)SERVER_ADDRESS, (int)SERVER_PORT, Serial);
+MQTT mqtt((char *)SERVER_ADDRESS, (int)SERVER_PORT, Serial);
 
 //Sensors instances
 // Microphone microphone(BIG_SOUND_AO_PIN);
 // Brightness brightness(PHOTO_RES_PIN);
 Temperature temperature(DHT11_PIN);
-Gyroscope gyroscope(GYRO_SDA_PIN, GYRO_SCL_PIN);
+// Gyroscope gyroscope(GYRO_SDA_PIN, GYRO_SCL_PIN);
 
 void publish(char *topic, char *sensorValue, int QoS = 0)
 {
@@ -50,10 +50,9 @@ void loop()
     temperature.measureValue(sensorValue);
     publish(temperature.getTopic(), sensorValue);
     delay(200);
-    gyroscope.measureValue(sensorValue);
-    publish((char*)gyroscope.accelerometerTopic, sensorValue);
+    // gyroscope.measureValue(sensorValue);
+    // publish((char *)gyroscope.accelerometerTopic, sensorValue);
     delay(200);
-
   }
   mqtt.loop();
 }

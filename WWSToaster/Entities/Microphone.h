@@ -8,7 +8,7 @@ class Microphone : Sensor
 {
 
 public:
-    Microphone(int pin) : Sensor("atm/microphone/value", pin){};
+    Microphone(int pin) : Sensor((char*)"atm/microphone/value", pin){};
 
     void measureValue()
     {

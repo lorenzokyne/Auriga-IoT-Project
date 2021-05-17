@@ -12,7 +12,7 @@ private:
     uint8_t pinscl;
 
 public:
-    Gyroscope(int pinsda, int pinscl) : Sensor("atm/gyro/value", pinsda)
+    Gyroscope(int pinsda, int pinscl) : Sensor((char*)"atm/gyro/value", pinsda)
     {
         this->pinscl = pinscl;
     };
