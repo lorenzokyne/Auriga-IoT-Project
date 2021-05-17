@@ -52,4 +52,4 @@ We choose C# but it is possible to develop RabbitMQ clients in a wide range of p
 
 ![](Aspose.Words.3b6298e9-ab60-46c1-8294-c9382381d2dd.002.jpeg)
 
-YOU ARE NOW ENABLED TO WRITE YOUR RABBITMQ clients! 
+  YOU ARE NOW ABLE TO WRITE YOUR RABBITMQ clients! 
