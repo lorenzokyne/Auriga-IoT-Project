@@ -7,6 +7,7 @@
 #include "Entities\LinearHall.h"
 #include "Entities\GPS.h"
 #include "Entities\Display.h"
+#include "Entities\Motion.h"
 //Environment vars
 const char *SERVER_ADDRESS = "93.63.173.7";
 const int SERVER_PORT = 1883;
@@ -20,6 +21,7 @@ const char *brightnessTopic = "atm/darkness/value";
 const char *microphoneTopic = "atm/microphone/value";
 const char *linearHallTopic = "atm/linearhall/value";
 const char *gpsTopic = "atm/gps/value";
+const char *motionTopic = "atm/motion/value";
 char sensorValue[100];
 
 extern SoftwareSerial Serial1;
@@ -31,6 +33,7 @@ Temperature temperature(DHT11_PIN);
 Gyroscope gyroscope(GYRO_SDA_PIN);
 Microphone microphone(BIG_SOUND_AO_PIN);
 LinearHall linearHall(LH_MAGNETIC_AO_PIN);
+Motion motion(MOTION_PIN);
 GPS gps;
 Display display;
 void publish(const char *topic, int QoS = 0)
@@ -70,7 +73,10 @@ void loop()
     delay(200);
     gps.measureValue(sensorValue);
     publish(gpsTopic);
-    digitalWrite(RELAY_PIN, HIGH);
+    delay(200);
+    motion.measureValue(sensorValue);
+    publish(motionTopic);
+    //digitalWrite(RELAY_PIN, HIGH);
   }
   mqtt.loop();
 }
