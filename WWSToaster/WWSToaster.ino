@@ -4,7 +4,9 @@
 #include "Entities\Brightness.h"
 #include "Entities\Temperature.h"
 #include "Entities\Gyroscope.h"
-
+#include "Entities\LinearHall.h"
+#include "Entities\GPS.h"
+#include "Entities\Display.h"
 //Environment vars
 const char *SERVER_ADDRESS = "93.63.173.7";
 const int SERVER_PORT = 1883;
@@ -16,6 +18,8 @@ const char *gyroTopic = "atm/gyro/value";
 const char *temperatureTopic = "atm/temperature/value";
 const char *brightnessTopic = "atm/darkness/value";
 const char *microphoneTopic = "atm/microphone/value";
+const char *linearHallTopic = "atm/linearhall/value";
+const char *gpsTopic = "atm/gps/value";
 char sensorValue[100];
 
 extern SoftwareSerial Serial1;
@@ -26,24 +30,22 @@ Brightness brightness(PHOTO_RES_PIN);
 Temperature temperature(DHT11_PIN);
 Gyroscope gyroscope(GYRO_SDA_PIN);
 Microphone microphone(BIG_SOUND_AO_PIN);
-
-void publish(const char *topic, char *sensorValue, int QoS = 0)
+LinearHall linearHall(LH_MAGNETIC_AO_PIN);
+GPS gps;
+Display display;
+void publish(const char *topic, int QoS = 0)
 {
   mqtt.publish(topic, sensorValue, QoS);
 }
 
 void setup()
 {
+  pinMode(RELAY_PIN, OUTPUT);
   Serial.begin(9600);
   initConnection();
-  Wire.begin();
-  Wire.beginTransmission(gyroscope.MPU_addr);
-  Wire.write(0x6B);
-  Wire.write(0); // set zero (wakes up the MPU-6050
-  Wire.endTransmission(true);
-  TWCR = 0;
-  // GPS
-  // gpsSerial.begin(9600); // connect gps sensor
+  gyroscope.setup();
+  display.setup();
+  // gps.setup();
 }
 
 void loop()
@@ -52,17 +54,23 @@ void loop()
   if (mqtt.isConnected())
   {
     microphone.measureValue(sensorValue);
-    publish(microphoneTopic, sensorValue);
+    publish(microphoneTopic);
     delay(200);
     brightness.measureValue(sensorValue);
-    publish(brightnessTopic, sensorValue);
+    publish(brightnessTopic);
     delay(200);
     temperature.measureValue(sensorValue);
-    publish(temperatureTopic, sensorValue);
+    publish(temperatureTopic);
     delay(200);
     gyroscope.measureValue(sensorValue);
-    publish(gyroTopic, sensorValue);
+    publish(gyroTopic);
     delay(200);
+    linearHall.measureValue(sensorValue);
+    publish(linearHallTopic);
+    delay(200);
+    gps.measureValue(sensorValue);
+    publish(gpsTopic);
+    digitalWrite(RELAY_PIN, HIGH);
   }
   mqtt.loop();
 }
