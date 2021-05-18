@@ -4,7 +4,7 @@
 #include "SIM8000.h"
 #include <SoftwareSerial.h>
 
-SoftwareSerial Serial1(8, 7);
+SoftwareSerial Serial1(7, 6);
 
 bool SIM8000::checkModem()
 {

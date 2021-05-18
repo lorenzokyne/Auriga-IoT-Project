@@ -3,10 +3,10 @@
 #include "Sensor.h"
 #endif
 #include "Arduino.h"
-#include <DHT.h>
+#include <dht_nonblocking.h>
 
-#define DHT_SENSOR_TYPE DHT11
-DHT dht_sensor(DHT11_PIN, DHT_SENSOR_TYPE);
+#define DHT_SENSOR_TYPE DHT_TYPE_11
+DHT_nonblocking dht_sensor(DHT_SENSOR_PIN, DHT_SENSOR_TYPE);
 //TODO -- THIS SENSOR NEEDS TO BE CHECKED BECAUSE IT ISNT WORKING PROPERLY
 class Temperature : Sensor
 {

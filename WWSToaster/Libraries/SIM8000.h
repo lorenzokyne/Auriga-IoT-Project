@@ -2,8 +2,8 @@
 
 #define debug
 #define RESET_PIN 6
-#define SOFTSERIAL_RX 7
-#define SOFTSERIAL_TX 8
+#define SOFTSERIAL_RX 6
+#define SOFTSERIAL_TX 7
 //#define OUT Serial
 
 class SIM8000

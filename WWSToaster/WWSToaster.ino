@@ -24,7 +24,7 @@ MQTT mqtt((char *)SERVER_ADDRESS, (int)SERVER_PORT, Serial);
 //Sensors instances
 Brightness brightness(PHOTO_RES_PIN);
 Temperature temperature(DHT11_PIN);
-Gyroscope gyroscope(GYRO_SDA_PIN, GYRO_SCL_PIN);
+Gyroscope gyroscope(GYRO_SDA_PIN);
 Microphone microphone(BIG_SOUND_AO_PIN);
 
 void publish(const char *topic, char *sensorValue, int QoS = 0)
@@ -36,7 +36,12 @@ void setup()
 {
   Serial.begin(9600);
   initConnection();
-
+  Wire.begin();
+  Wire.beginTransmission(gyroscope.MPU_addr);
+  Wire.write(0x6B);
+  Wire.write(0); // set zero (wakes up the MPU-6050
+  Wire.endTransmission(true);
+  TWCR = 0;
   // GPS
   // gpsSerial.begin(9600); // connect gps sensor
 }

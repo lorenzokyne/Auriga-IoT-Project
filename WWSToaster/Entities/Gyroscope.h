@@ -8,19 +8,9 @@
 class Gyroscope : Sensor
 {
 private:
-    const int MPU_addr = 0x68; // I2C address of the MPU-6050
-    uint8_t pinscl;
-
 public:
-    Gyroscope(int pinsda, int pinscl) : Sensor(pinsda)
-    {
-        this->pinscl = pinscl;
-        Wire.begin();
-        Wire.beginTransmission(MPU_addr);
-        Wire.write(0x6B);
-        Wire.write(0); // set zero (wakes up the MPU-6050
-        Wire.endTransmission(true);
-    };
+    const int MPU_addr = 0x68; // I2C address of the MPU-6050
+    Gyroscope(int pinsda) : Sensor(pinsda){};
 
     void measureValue(char *value)
     {
