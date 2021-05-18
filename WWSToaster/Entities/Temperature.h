@@ -3,10 +3,10 @@
 #include "Sensor.h"
 #endif
 #include "Arduino.h"
-#include <dht_nonblocking.h>
+#include <DHT.h>
 
-#define DHT_SENSOR_TYPE DHT_TYPE_11
-DHT_nonblocking dht_sensor(DHT_SENSOR_PIN, DHT_SENSOR_TYPE);
+#define DHT_SENSOR_TYPE DHT11
+DHT dht_sensor(DHT11_PIN, DHT_SENSOR_TYPE);
 //TODO -- THIS SENSOR NEEDS TO BE CHECKED BECAUSE IT ISNT WORKING PROPERLY
 class Temperature : Sensor
 {
@@ -16,11 +16,15 @@ public:
     {
         dht_sensor.begin();
     };
-    void measureValue(char*value)
+    void measureValue(char *value)
     {
         // TEMP AND HUMIDITY SENSOR °C
-
-        uint8_t len = sprintf(value, "%f,%f",  dht_sensor.readTemperature(),dht_sensor.readHumidity());
+        char str_temp[7], str_hum[7];
+        float temp = dht_sensor.readTemperature();
+        float hum = dht_sensor.readHumidity();
+        dtostrf(temp, 4, 2, str_temp);
+        dtostrf(hum, 4, 2, str_hum);
+        uint8_t len = sprintf(value, "%s,%s", str_temp, str_hum);
         value[len] = '\0';
     }
 };

@@ -11,6 +11,7 @@ public:
     Brightness(int pin) : Sensor(pin){};
     void measureValue(char *value)
     {
+        value[0]='\0';
         // BRIGHTNESS SENSOR
         // 0 = LIGHT - 1000 = DARKNESS
         int brightnessAnalogValue = analogRead(this->pin);

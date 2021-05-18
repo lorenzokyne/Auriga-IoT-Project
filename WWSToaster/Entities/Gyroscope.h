@@ -14,6 +14,7 @@ public:
 
     void measureValue(char *value)
     {
+        value[0]='\0';
         short AcX, AcY, Tmp, AcZ, GyX, GyY, GyZ;
         Wire.beginTransmission(MPU_addr);
         Wire.write(0x3B);

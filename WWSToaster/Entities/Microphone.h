@@ -12,6 +12,7 @@ public:
 
     void measureValue(char *value)
     {
+        value[0]='\0';
         // MICROPHONE SENSOR
         int microphoneValue = analogRead(this->pin); // Read the value of the analog interface A0 assigned to digitalValue
         int StrLen = sprintf(value, "%d", microphoneValue);
