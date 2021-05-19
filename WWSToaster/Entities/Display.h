@@ -27,7 +27,16 @@ class Display
 public:
     void setup()
     {
-        // set up the LCD's number of columns and rows:
+        lcd.begin(16, 2);
+        lcd.setCursor(0, 0);
+        // Print a message to the LCD.
+        lcd.print("Vassallo is ");
+        lcd.setCursor(0, 1);
+        lcd.print("starting");
+    }
+
+    void started()
+    {
         lcd.begin(16, 2);
         lcd.createChar(0, aurigaLogo1);
         lcd.createChar(1, aurigaLogo2);

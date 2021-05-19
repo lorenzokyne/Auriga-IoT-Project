@@ -332,9 +332,11 @@ void MQTT::serialEvent()
             while (Serial1.available())
             {
                 code = Serial1.read();
-                OUT->print((char)code);
+                receivedMessage[count]=(char)code;
                 count++;
             }
+            receivedMessage[count]='\0';
+            OUT->print(receivedMessage);
             OUT->print(F("\nMessage Length = "));
             OUT->print(count);
             OUT->println(F("\nMessage End..."));

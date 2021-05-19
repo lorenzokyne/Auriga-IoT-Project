@@ -29,7 +29,6 @@ private:
     const char MQTTLVL = 0x03;
     const char MQTTFlags = 0xC2;
     const unsigned int MQTTKeepAlive = 60;
-
     const char MQTTQOS = 0x00;
     SIM8000 sim800;
     uint8_t packetType = 0;
@@ -40,6 +39,7 @@ private:
 
 public:
     Stream *OUT;
+    char receivedMessage[20];
     MQTT(char *server, int port);
     MQTT(char *server, int port, Stream &out);
     bool initialize();

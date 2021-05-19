@@ -45,9 +45,10 @@ void setup()
 {
   pinMode(RELAY_PIN, OUTPUT);
   Serial.begin(9600);
+  display.setup();
   initConnection();
   gyroscope.setup();
-  display.setup();
+  display.started();
   // gps.setup();
 }
 
@@ -79,6 +80,17 @@ void loop()
     //digitalWrite(RELAY_PIN, HIGH);
   }
   mqtt.loop();
+  mqtt.OUT->println(F("Message: "));
+  mqtt.OUT->println(mqtt.receivedMessage);
+  mqtt.OUT->println(strlen(mqtt.receivedMessage));
+  if (strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
+  {
+    digitalWrite(RELAY_PIN, HIGH);
+  }
+  else if (strcmp(mqtt.receivedMessage, "Apri tutto") == 0)
+  {
+    digitalWrite(RELAY_PIN, LOW);
+  }
 }
 
 void serialEvent1()
