@@ -7,35 +7,28 @@ using System.Threading.Tasks;
 
 namespace Producer
 {
-    class Producer
+    public class Producer
     {
-        static void Main(string[] args)
+        public Producer(string message)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "192.168.30.13", UserName = "atm", Password = "atm" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.QueueDeclare(queue: "UnibaTest",
-                                     durable: true,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
 
-                var message = "This is an example of producer!";
+
+                //var message = "Apri tutto";
                 var body = Encoding.UTF8.GetBytes(message);
 
                 var properties = channel.CreateBasicProperties();
                 properties.Persistent = true;
 
-                channel.BasicPublish(exchange: "",
-                                     routingKey: "UnibaTest",
+                channel.BasicPublish(exchange: "amq.topic",
+                                     routingKey: "WWSToaster-00",
                                      basicProperties: properties,
                                      body: body);
                 Console.WriteLine("Sent: {0}", message);
             }
-
-            Console.WriteLine(" Press [enter] to exit.");
-            Console.ReadLine();
         }
     }
 }
