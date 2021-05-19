@@ -2,8 +2,8 @@
 
 #define debug
 #define RESET_PIN 6
-#define SOFTSERIAL_RX 7
-#define SOFTSERIAL_TX 8
+#define SOFTSERIAL_RX 6
+#define SOFTSERIAL_TX 7
 //#define OUT Serial
 
 class SIM8000
@@ -17,7 +17,7 @@ private:
 public:
     SIM8000();
     SIM8000(Stream &OUT);
-    bool SIM8000::initialize(uint8_t mode, Stream *out);
+    bool initialize(uint8_t mode, Stream *out);
     bool initModem();
     bool initNetwork();
     bool initGPRS();
@@ -33,5 +33,5 @@ public:
     void resetModem();
     char *getTCPStatus();
     void setAPN(char *APN, char *username, char *password);
-    char *sendATCommandResponse(char *ATcommand, unsigned int timeout);
+    char *sendATCommandResponse(char *ATcommand, unsigned int timeout, char*response);
 };
