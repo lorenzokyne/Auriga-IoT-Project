@@ -77,12 +77,9 @@ void loop()
     delay(200);
     motion.measureValue(sensorValue);
     publish(motionTopic);
-    //digitalWrite(RELAY_PIN, HIGH);
   }
+
   mqtt.loop();
-  mqtt.OUT->println(F("Message: "));
-  mqtt.OUT->println(mqtt.receivedMessage);
-  mqtt.OUT->println(strlen(mqtt.receivedMessage));
   if (strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
   {
     digitalWrite(RELAY_PIN, HIGH);

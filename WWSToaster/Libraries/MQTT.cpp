@@ -93,6 +93,7 @@ bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const cha
 bool MQTT::publish(const char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 {
     Serial1.listen();
+    OUT->println(F(" "));
     OUT->println(F("Publishing data..."));
     char packetid[30], str1[50], message[150];
 
@@ -111,11 +112,11 @@ bool MQTT::publish(const char *MQTTTopic, char *MQTTMessage, uint8_t qos)
         datalength = sprintf((char *)str1, "%s", MQTTTopic);
     }
     //str1[datalength] = '\0';
-    datalength = strlen(str1)+strlen(MQTTMessage);
+    datalength = strlen(str1) + strlen(MQTTMessage);
     OUT->print(F("Datalength = "));
     OUT->println(datalength);
-    OUT->print(F("str = "));
-    OUT->println(MQTTMessage);
+    // OUT->print(F("str = "));
+    // OUT->println(MQTTMessage);
 
     Serial1.write(0x30 + (qos * 2)); //QOS = 1
     delay(100);
@@ -200,7 +201,7 @@ bool MQTT::disconnect()
 
 void MQTT::loop()
 {
-    ping();
+    //ping();
     serialEvent();
 }
 
@@ -328,14 +329,22 @@ void MQTT::serialEvent()
 
             OUT->print(F("\nMessage :"));
 
-            int count = 0;
-            while (Serial1.available())
+            int count = 0, lenght = 0;
+            char lenghtChar[2];
+            lenghtChar[0] = (char)Serial1.read();
+            lenghtChar[1] = (char)Serial1.read();
+            lenght = atoi(lenghtChar);
+            char temp[20];
+            while (Serial1.available() && (count < lenght))
             {
                 code = Serial1.read();
-                receivedMessage[count]=(char)code;
+                temp[count] = (char)code;
                 count++;
             }
-            receivedMessage[count]='\0';
+            temp[count] = '\0';
+            if(count == lenght){
+                strcpy(receivedMessage, temp);
+            }
             OUT->print(receivedMessage);
             OUT->print(F("\nMessage Length = "));
             OUT->print(count);

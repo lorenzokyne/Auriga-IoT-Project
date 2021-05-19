@@ -15,7 +15,7 @@ public:
         value[0]='\0';
         // MICROPHONE SENSOR
         int microphoneValue = analogRead(this->pin); // Read the value of the analog interface A0 assigned to digitalValue
-        int StrLen = sprintf(value, "%d", microphoneValue);
+        int StrLen = sprintf(value, "MPH:%d", microphoneValue);
         value[StrLen] = '\0';
     }
 };

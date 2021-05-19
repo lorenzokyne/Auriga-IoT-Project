@@ -13,10 +13,7 @@ public:
     {
         value[0] = '\0';
         int motionVal = digitalRead(this->pin);
-        if (motionVal == HIGH)
-        {
-            int StrLen = sprintf(value, "%s", "Motion detected!");
-            value[StrLen] = '\0';
-        }
+        int StrLen = sprintf(value, "MOT:%d", motionVal);
+        value[StrLen] = '\0';
     }
 };

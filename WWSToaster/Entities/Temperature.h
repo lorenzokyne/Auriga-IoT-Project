@@ -24,7 +24,7 @@ public:
         float hum = dht_sensor.readHumidity();
         dtostrf(temp, 4, 2, str_temp);
         dtostrf(hum, 4, 2, str_hum);
-        uint8_t len = sprintf(value, "%s,%s", str_temp, str_hum);
+        uint8_t len = sprintf(value, "TEM:%s,%s", str_temp, str_hum);
         value[len] = '\0';
     }
 };

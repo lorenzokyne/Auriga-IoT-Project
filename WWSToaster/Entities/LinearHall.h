@@ -15,7 +15,7 @@ public:
         value[0] = '\0';
         // LINEAR HALL
         int linearHallValue = analogRead(this->pin);
-        int StrLen = sprintf(value, "%d", linearHallValue);
+        int StrLen = sprintf(value, "LHL:%d", linearHallValue);
         value[StrLen] = '\0';
     }
 };

@@ -33,10 +33,10 @@ public:
             {
                 gps.f_get_position(&lat, &lon); // get latitude and longitude
             }
-            String latitude = String(lat, 6);
-            String longitude = String(lon, 6);
-            int len = sprintf(value, "Lat:%s;Lon:%s", latitude, longitude);
-            value[len] = '\0';
         }
+        String latitude = String(lat, 6);
+        String longitude = String(lon, 6);
+        int len = sprintf(value, "GPS:Lat:%s;Lon:%s", latitude, longitude);
+        value[len] = '\0';
     }
 };
