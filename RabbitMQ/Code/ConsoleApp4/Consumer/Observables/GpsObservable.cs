@@ -6,12 +6,11 @@ using System.Text;
 
 namespace Consumer.Observables
 {
-    public class TemperatureObservable : IObservable<float>
+    public class GpsObservable : IObservable<Tuple<float, float>>
     {
-        private List<IObserver<float>> observers;
-        public TemperatureObservable(IModel channel)
+        private List<IObserver<Tuple<float, float>>> observers;
+        public GpsObservable(IModel channel)
         {
-
             channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
             Console.WriteLine("Waiting for messages...");
@@ -22,19 +21,23 @@ namespace Consumer.Observables
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Received: {0}", message);
-                float value = 60.00f;//float.Parse(message.Split(':')[1].Split(',')[0]);
-                this.UpdateValue(value);
+                string gpsValues = message.Split(':')[1];
+                float lat = float.Parse(gpsValues.Split(';')[0].Split(':')[1]);
+                float lon = float.Parse(message.Split(';')[1].Split(':')[1]);
+                this.UpdateValue(new Tuple<float, float>(lat,lon));
                 Console.WriteLine("Done");
+
+                // Note: it is possible to access the channel via
+                //       ((EventingBasicConsumer)sender).Model here
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
             };
-            channel.BasicConsume(queue: "q_temp-humidity",
+            channel.BasicConsume(queue: "q_gps",
                                  autoAck: false,
                                  consumer: consumer);
-
-            observers = new List<IObserver<float>>();
+            observers = new List<IObserver<Tuple<float, float>>>();
         }
 
-        public IDisposable Subscribe(IObserver<float> observer)
+        public IDisposable Subscribe(IObserver<Tuple<float, float>> observer)
         {
             if (!observers.Contains(observer))
                 observers.Add(observer);
@@ -43,10 +46,10 @@ namespace Consumer.Observables
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<float>> _observers;
-            private IObserver<float> _observer;
+            private List<IObserver<Tuple<float, float>>> _observers;
+            private IObserver<Tuple<float, float>> _observer;
 
-            public Unsubscriber(List<IObserver<float>> observers, IObserver<float> observer)
+            public Unsubscriber(List<IObserver<Tuple<float, float>>> observers, IObserver<Tuple<float, float>> observer)
             {
                 this._observers = observers;
                 this._observer = observer;
@@ -58,14 +61,11 @@ namespace Consumer.Observables
                     _observers.Remove(_observer);
             }
         }
-        public void UpdateValue(Nullable<float> val)
+        private void UpdateValue(Tuple<float, float> val)
         {
             foreach (var observer in observers)
             {
-                if (!val.HasValue)
-                    observer.OnError(new Exception());
-                else
-                    observer.OnNext(val.Value);
+                    observer.OnNext(val);
             }
         }
 

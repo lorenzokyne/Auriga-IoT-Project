@@ -6,12 +6,11 @@ using System.Text;
 
 namespace Consumer.Observables
 {
-    public class TemperatureObservable : IObservable<float>
+    public class JammerObservable : IObservable<int>
     {
-        private List<IObserver<float>> observers;
-        public TemperatureObservable(IModel channel)
+        private List<IObserver<int>> observers;
+        public JammerObservable(IModel channel)
         {
-
             channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
             Console.WriteLine("Waiting for messages...");
@@ -22,19 +21,21 @@ namespace Consumer.Observables
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Received: {0}", message);
-                float value = 60.00f;//float.Parse(message.Split(':')[1].Split(',')[0]);
+                int value = int.Parse(message.Split(':')[1]);
                 this.UpdateValue(value);
                 Console.WriteLine("Done");
+
+                // Note: it is possible to access the channel via
+                //       ((EventingBasicConsumer)sender).Model here
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
             };
-            channel.BasicConsume(queue: "q_temp-humidity",
+            channel.BasicConsume(queue: "q_electromagnetic-field",
                                  autoAck: false,
                                  consumer: consumer);
-
-            observers = new List<IObserver<float>>();
+            observers = new List<IObserver<int>>();
         }
 
-        public IDisposable Subscribe(IObserver<float> observer)
+        public IDisposable Subscribe(IObserver<int> observer)
         {
             if (!observers.Contains(observer))
                 observers.Add(observer);
@@ -43,10 +44,10 @@ namespace Consumer.Observables
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<float>> _observers;
-            private IObserver<float> _observer;
+            private List<IObserver<int>> _observers;
+            private IObserver<int> _observer;
 
-            public Unsubscriber(List<IObserver<float>> observers, IObserver<float> observer)
+            public Unsubscriber(List<IObserver<int>> observers, IObserver<int> observer)
             {
                 this._observers = observers;
                 this._observer = observer;
@@ -58,7 +59,7 @@ namespace Consumer.Observables
                     _observers.Remove(_observer);
             }
         }
-        public void UpdateValue(Nullable<float> val)
+        private void UpdateValue(Nullable<int> val)
         {
             foreach (var observer in observers)
             {

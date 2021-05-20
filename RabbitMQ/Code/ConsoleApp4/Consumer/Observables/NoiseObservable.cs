@@ -21,8 +21,8 @@ namespace Consumer.Observables
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Received: {0}", message);
-                //int value = int.Parse(message.Split(':')[1]);
-                //this.UpdateValue(1);
+                int value = int.Parse(message.Split(':')[1]);
+                this.UpdateValue(value);
                 Console.WriteLine("Done");
 
                 // Note: it is possible to access the channel via
