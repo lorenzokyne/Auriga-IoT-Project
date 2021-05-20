@@ -14,12 +14,6 @@ namespace Consumer
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                //channel.QueueDeclare(queue: "UnibaTest",
-                //                     durable: true,
-                //                     exclusive: false,
-                //                     autoDelete: false,
-                //                     arguments: null);
-
                 channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
                 Console.WriteLine("Waiting for messages...");
@@ -30,17 +24,20 @@ namespace Consumer
                     var body = ea.Body.ToArray();
                     var message = Encoding.UTF8.GetString(body);
                     Console.WriteLine("Received: {0}", message);
-                    if (int.Parse(message) < 800)
-                    {
-                        new Producer.Producer("Stacca stacca!");
-                    }
+                    string message1 = "Apri tutto";
+                    message1 = message1.Length.ToString().PadLeft(2, '0') + message1;
+                    new Producer.Producer(message1);
+                    //if (int.Parse(message) < 800)
+                    //{
+                    //    new Producer.Producer("Stacca stacca!");
+                    //}
                     Console.WriteLine("Done");
 
                     // Note: it is possible to access the channel via
                     //       ((EventingBasicConsumer)sender).Model here
                     channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                 };
-                channel.BasicConsume(queue: "q_brightness",
+                channel.BasicConsume(queue: "q_sensors",
                                      autoAck: false,
                                      consumer: consumer);
 

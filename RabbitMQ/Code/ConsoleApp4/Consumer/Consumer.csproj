@@ -65,8 +65,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consumer.cs" />
+    <Compile Include="ATMLogic.cs" />
+    <Compile Include="Observables\MotionObservable.cs" />
+    <Compile Include="Observables\NoiseObservable.cs" />
+    <Compile Include="Observers\MotionObserver.cs" />
+    <Compile Include="Observers\NoiseObserver.cs" />
+    <Compile Include="SecondScenario.cs" />
+    <Compile Include="FirstScenario.cs" />
+    <Compile Include="Observables\BrightnessObservable.cs" />
+    <Compile Include="Observables\TemperatureObservable.cs" />
+    <Compile Include="Observers\BrightnessObserver.cs" />
+    <Compile Include="Observers\TemperatureObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FourthScenario.cs" />
+    <Compile Include="ThirdScenario.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
