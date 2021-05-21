@@ -24,18 +24,18 @@ public:
     {
         gpsSerial.listen();
         value[0] = '\0';
-        float lat = 0, lon = 0; // create variable for latitude and longitude
+        float lat = 41.09549121687406, lon = 16.862459713449084; // create variable for latitude and longitude
         // Serial.println("Searching GPS signal...");
-        if (gpsSerial.available())
-        {
-            // Serial.print("READ: " + gpsSerial.read()); // check for gps data
+        while (gpsSerial.available())
+        {// check for gps data
             if (gps.encode(gpsSerial.read())) // encode gps data
             {
                 gps.f_get_position(&lat, &lon); // get latitude and longitude
             }
         }
-        String latitude = String(lat, 6);
-        String longitude = String(lon, 6);
+        char latitude[11], longitude[11];
+        dtostrf(lat, 10, 6, latitude);
+        dtostrf(lon, 10, 6, longitude);
         int len = sprintf(value, "GPS:Lat:%s;Lon:%s", latitude, longitude);
         value[len] = '\0';
     }

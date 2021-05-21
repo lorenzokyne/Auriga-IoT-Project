@@ -207,6 +207,7 @@ void MQTT::loop()
 
 void MQTT::serialEvent()
 {
+    Serial1.listen();
     OUT->println(F("\nBegin"));
     int X;
     unsigned char code;

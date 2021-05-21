@@ -38,6 +38,7 @@ GPS gps;
 Display display;
 void publish(const char *topic, int QoS = 0)
 {
+  Serial1.listen();
   mqtt.publish(topic, sensorValue, QoS);
 }
 
@@ -45,11 +46,11 @@ void setup()
 {
   pinMode(RELAY_PIN, OUTPUT);
   Serial.begin(9600);
+  // gps.setup();
   display.setup();
   initConnection();
   gyroscope.setup();
   display.started();
-  // gps.setup();
 }
 
 void loop()

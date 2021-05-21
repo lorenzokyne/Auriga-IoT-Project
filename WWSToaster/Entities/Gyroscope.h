@@ -27,7 +27,7 @@ public:
         GyX = Wire.read() << 8 | Wire.read(); // 0x43 (GYRO_XOUT_H) & 0x44 (GYRO_XOUT_L)
         GyY = Wire.read() << 8 | Wire.read(); // 0x45 (GYRO_YOUT_H) & 0x46 (GYRO_YOUT_L)
         GyZ = Wire.read() << 8 | Wire.read(); // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
-        int StrLen = sprintf(value, "GYR:GyX=%dGyY=%dGyZ=%dAcX=%dAcY=%dAcZ=%d", GyX, GyY, GyZ, AcX, AcY, AcZ);
+        int StrLen = sprintf(value, "GYR:GyX=%d;GyY=%d;GyZ=%d;AcX=%d;AcY=%d;AcZ=%d", GyX, GyY, GyZ, AcX, AcY, AcZ);
         value[StrLen] = '\0';
     }
     
