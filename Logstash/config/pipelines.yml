@@ -1,0 +1,4 @@
+# List of pipelines to be loaded by Logstash
+
+- pipeline.id: sensors-pipeline
+  path.config: "./config/sensors-pipeline.conf"
