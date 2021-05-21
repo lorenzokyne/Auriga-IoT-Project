@@ -18,6 +18,7 @@ namespace Producer
 
 
                 //var message = "Apri tutto";
+                message = message.Length.ToString().PadLeft(2, '0') + message;
                 var body = Encoding.UTF8.GetBytes(message);
 
                 var properties = channel.CreateBasicProperties();

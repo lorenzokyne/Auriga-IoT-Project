@@ -23,7 +23,6 @@ namespace Consumer
                     {
                         Console.WriteLine("Seventh Rule verified!");
                         string message = "send gps";
-                        message = message.Length.ToString().PadLeft(2, '0') + message;
                         new Producer.Producer(message);
                     }
                     //else

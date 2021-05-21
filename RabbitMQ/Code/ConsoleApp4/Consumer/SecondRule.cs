@@ -26,7 +26,6 @@ namespace Consumer
                     {
                         Console.WriteLine("Second Rule verified!");
                         string message = "Stacca stacca!";
-                        message = message.Length.ToString().PadLeft(2, '0') + message;
                         new Producer.Producer(message);
                         noise.Value = 0;
                         brightness.Value = 0;
