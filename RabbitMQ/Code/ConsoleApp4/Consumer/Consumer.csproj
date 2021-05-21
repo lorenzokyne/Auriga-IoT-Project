@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Consumer.SecondScenarioLogic</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="RabbitMQ.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.6.2.1\lib\net461\RabbitMQ.Client.dll</HintPath>
@@ -65,20 +68,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ATMLogic.cs" />
+    <Compile Include="SeventhRule.cs" />
+    <Compile Include="SixthRule.cs" />
+    <Compile Include="FifthRule.cs" />
+    <Compile Include="Model\Gyroscope.cs" />
+    <Compile Include="Observables\GpsObservable.cs" />
+    <Compile Include="Observables\GyroscopeObservable.cs" />
+    <Compile Include="Observables\JammerObservable.cs" />
+    <Compile Include="Observers\GyroscopeObserver.cs" />
+    <Compile Include="Observers\JammerObserver.cs" />
+    <Compile Include="Observers\GpsObserver.cs" />
+    <Compile Include="SecondScenarioLogic.cs" />
+    <Compile Include="FirstScenarioLogic.cs" />
     <Compile Include="Observables\MotionObservable.cs" />
     <Compile Include="Observables\NoiseObservable.cs" />
     <Compile Include="Observers\MotionObserver.cs" />
     <Compile Include="Observers\NoiseObserver.cs" />
-    <Compile Include="SecondScenario.cs" />
-    <Compile Include="FirstScenario.cs" />
+    <Compile Include="SecondRule.cs" />
+    <Compile Include="FirstRule.cs" />
     <Compile Include="Observables\BrightnessObservable.cs" />
     <Compile Include="Observables\TemperatureObservable.cs" />
     <Compile Include="Observers\BrightnessObserver.cs" />
     <Compile Include="Observers\TemperatureObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FourthScenario.cs" />
-    <Compile Include="ThirdScenario.cs" />
+    <Compile Include="FourthRule.cs" />
+    <Compile Include="ThirdRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -90,5 +104,6 @@
       <Name>Producer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
