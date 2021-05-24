@@ -52,42 +52,43 @@ void setup()
   gyroscope.setup();
   display.started();
 }
-
+bool gpsOnlyMode = false;
 void loop()
 {
-  delay(5000);
   if (mqtt.isConnected())
   {
-    microphone.measureValue(sensorValue);
-    publish(microphoneTopic);
-    delay(200);
-    brightness.measureValue(sensorValue);
-    publish(brightnessTopic);
-    delay(200);
-    temperature.measureValue(sensorValue);
-    publish(temperatureTopic);
-    delay(200);
-    gyroscope.measureValue(sensorValue);
-    publish(gyroTopic);
-    delay(200);
-    linearHall.measureValue(sensorValue);
-    publish(linearHallTopic);
-    delay(200);
-    gps.measureValue(sensorValue);
-    publish(gpsTopic);
-    delay(200);
-    motion.measureValue(sensorValue);
-    publish(motionTopic);
+    if (gpsOnlyMode)
+    {
+      gps.measureValue(sensorValue);
+      publish(gpsTopic);
+    }
+    else
+    {
+      publishSensors();
+    }
   }
 
   mqtt.loop();
   if (strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
   {
-    digitalWrite(RELAY_PIN, HIGH);
+    display.turnOff();
+  }
+  else if (strcmp(mqtt.receivedMessage, "send gps") == 0)
+  {
+    display.turnOff();
+    gpsOnlyMode = true;
   }
   else if (strcmp(mqtt.receivedMessage, "Apri tutto") == 0)
   {
-    digitalWrite(RELAY_PIN, LOW);
+    display.turnOn();
+  }
+  if (gpsOnlyMode)
+  {
+    delay(1000);
+  }
+  else
+  {
+    delay(5000);
   }
 }
 
@@ -108,4 +109,28 @@ void initConnection()
   {
     mqtt.OUT->println(F("Unable to connect to the network.."));
   }
+}
+
+void publishSensors()
+{
+  microphone.measureValue(sensorValue);
+  publish(microphoneTopic);
+  delay(200);
+  brightness.measureValue(sensorValue);
+  publish(brightnessTopic);
+  delay(200);
+  temperature.measureValue(sensorValue);
+  publish(temperatureTopic);
+  delay(200);
+  gyroscope.measureValue(sensorValue);
+  publish(gyroTopic);
+  delay(200);
+  linearHall.measureValue(sensorValue);
+  publish(linearHallTopic);
+  delay(200);
+  gps.measureValue(sensorValue);
+  publish(gpsTopic);
+  delay(200);
+  motion.measureValue(sensorValue);
+  publish(motionTopic);
 }
