@@ -58,7 +58,7 @@ In order to ensure the full compatibility with our project, we suggest you to ap
 
 #### Schematics
 
-
+![Arduino schematics](docs/diagrams/arduino-schematics.jpg)
 
 ### RabbitMQ
 
