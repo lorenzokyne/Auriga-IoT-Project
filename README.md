@@ -1,10 +1,10 @@
 # Auriga.WWSToaster
 
 ## Description
-A simple arduino project for a prototype of IoT security device for ATMs. Let's see some examples of ATM attacks that this project aims to avoid. 
+A simple Arduino project for a prototype of IoT security device for ATMs. Let's see some examples of ATM attacks that this project aims to tackle. 
 
 ### ATM Jackpotting
-It is a sophisticated crime in which thieves install malicious software and/or hardware at ATMs that forces the machines to dispense huge volumes of cash on demand.
+It is a sophisticated crime in which thieves install malicious software and/or hardware on ATMs that forces the machines to dispense huge volumes of cash on demand.
 1. Gain physical internal access to an ATM through the top-hat of the terminal.
 2. Use an endscope instrument to locate internal portion of the cash machine.
 3. Attach a cord that allows them to sync their device to the ATM’s computer.
@@ -12,7 +12,7 @@ It is a sophisticated crime in which thieves install malicious software and/or h
 5. Install the ATM Malware.
 6. Collect cash with money mule.
 
-This is a summarized attack process and is no way an absolute methodology to ATM attacking. 
+This is a summarized attack process and it is not an absolute methodology to ATM attacking. 
 
 #### Scenario 1 - Rules
 - **Rule 1:** Temperature over 59°C + Brightness under 400
@@ -24,7 +24,7 @@ This is a summarized attack process and is no way an absolute methodology to ATM
 When one of this rules is satisfied the ATM must be switched off.
 
 ### Physical Attack
-Another simple and frequent attack, especially in Puglia, is removing of ATM from the site. This is a Physical Attack. Physical attacks on ATMs are considered risky, as it not only leads to financial losses but also involves the risk to property and life. The physical attack involves solid and gas explosives attacks, along with physical removal of ATMs from the site and later using other techniques to gain access to the cash dispenser.
+Another simple and frequent attack, especially in Apulia, is about the physical removing of ATM from the site. This is called Physical Attack. Physical attacks on ATMs are considered risky, as it not only leads to financial losses but also involves the risk to property and life. The physical attack usally involves solid and gas explosives attacks, along with physical removal of ATMs from the site and later using other techniques to gain access to the cash dispenser and safe.
 
 #### Scenario 2 - Rules
 - **Rule 1:** GPS movement detected
