@@ -14,8 +14,23 @@ It is a sophisticated crime in which thieves install malicious software and/or h
 
 This is a summarized attack process and is no way an absolute methodology to ATM attacking. 
 
+#### Scenario 1 - Rules
+- **Rule 1:** Temperature over 59°C + Brightness under 400
+- **Rule 2:** Noise under 500 + Brightness under 400
+- **Rule 3:** Temperature over 59°C + Motion detected
+- **Rule 4:** Noise under 500 + Motion detected
+- **Rule 5:** Jammer detected under 400 or over 600 (**offline** rule)
+
+When one of this rules is satisfied the ATM must be switched off.
+
 ### Physical Attack
 Another simple and frequent attack, especially in Puglia, is removing of ATM from the site. This is a Physical Attack. Physical attacks on ATMs are considered risky, as it not only leads to financial losses but also involves the risk to property and life. The physical attack involves solid and gas explosives attacks, along with physical removal of ATMs from the site and later using other techniques to gain access to the cash dispenser.
+
+#### Scenario 2 - Rules
+- **Rule 1:** GPS movement detected
+- **Rule 2:** Gyroscope over 10000 + Accelerometer over 10000
+
+When one of this rules is satisfied the ATM must be switched in a "GPS only" mode. In this mode we have to send only GPS data and more often then usual.
 
 ### Other types of Attacks
 There are other types of attacks like Man-in Middle attack, Data Sniffing Attacks, Skimming with Spoofing. Those attacks target customers instead of banks. 
@@ -39,22 +54,34 @@ The following diagram shows the architecture that must be implemented in order t
 
 ### Arduino
 
+In order to ensure the full compatibility with our project, we suggest you to apply a wiring following our schematics.
+
+#### Schematics
+
+
+
 ### RabbitMQ
 
-After you installed RabbitMQ you must create a new exchange with the following attributes.
+After you installed RabbitMQ you should already have the following default exchange (which is the default exchange for MQTT communication), if not you must create a new exchange with the following attributes:
 - **Name**: amq.topic
 - **Type**: topic
 - **Durability**: true
 
-Queue Name | Type | Durability | Args
------------- | ------------- | ------------- | -------------
-q_brightness | classic| true | 
-q_electromagnetic-field | classic| true | 
-q_gps | classic| true | 
-q_gyroscope | classic| true | 
-q_microphone | classic| true | 
-q_motion | classic| true | 
-q_sensors | classic| true | 
-q_temp-humidity | classic| true | 
+If you want to use AMQP, instead of MQTT, you can use this exchange or you can also create your own.
+
+In the following table all queues configurations are described.
+
+Queue Name | Type | Durability | Args | Binding | Description |
+------------ | ------------- | ------------- | ------------- | ------------- | ------------- |
+**q_brightness**| classic| true | | atm.darkness.* | Queue which interacts with Brightness sensor.<br/> Value goes from 0 LIGH to 1023 DARK |
+**q_electromagnetic-field** | classic| true | | atm.linearhall.* | Queue which interacts with LinearHall sensor.<br/> Value goes from 0 to 1023 |
+**q_gps** | classic| true | | atm.gps.* | Queue which interacts with GPS module.<br/> Values are Latitude and Longitude |
+**q_gyroscope** | classic| true | | atm.gyro.* | Queue which interacts with Gyroscope sensor.<br/> Values are from <br/> Gyroscope --> X Y Z and Accelerometer --> X Y Z |
+**q_microphone** | classic| true | | atm.microphone.* | Queue which interacts with Small Sound sensor.<br/> Value goes from 0 to 1023 |
+**q_motion** | classic| true | | atm.motion.* | Queue which interacts with Motion sensor.<br/> Value are 1, if movement is detected, 0 instead. |
+**q_temp-humidity** | classic| true | | atm.temperature.* | Queue which interacts with DHT sensor.<br/> Value goes from <br/>-25 to 68 °C for Temperature and<br/> from 20 to 90 % for Humidity |
+**q_sensors** | classic| true | | atm.# | Queue gets data from all sensors and it's used for Monitoring purpose. |
+
+**N.B.**: For MQTT communications you **MUST** use **'/'** instead of **'.'** in the routing keys.
 
 ### Elastic Stack
