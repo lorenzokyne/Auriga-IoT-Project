@@ -75,11 +75,11 @@ public:
 
   void turnOn()
   {
-    digitalWrite(RELAY_PIN, HIGH);
+    digitalWrite(RELAY_PIN, LOW);
   }
 
   void turnOff()
   {
-    digitalWrite(RELAY_PIN, LOW);
+    digitalWrite(RELAY_PIN, HIGH);
   }
 };

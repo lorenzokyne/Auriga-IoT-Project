@@ -24,21 +24,24 @@ const char *gpsTopic = "atm/gps/value";
 const char *motionTopic = "atm/motion/value";
 char sensorValue[100];
 
-extern SoftwareSerial Serial1;
+SoftwareSerial Serial1(SIM_TX_PIN, SIM_RX_PIN);
+SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); //arduino tx -> gps rx
 MQTT mqtt((char *)SERVER_ADDRESS, (int)SERVER_PORT, Serial);
 
+bool gpsOnlyMode = false;
+
 //Sensors instances
+GPS gpsModule;
 Brightness brightness(PHOTO_RES_PIN);
 Temperature temperature(DHT11_PIN);
 Gyroscope gyroscope(GYRO_SDA_PIN);
 Microphone microphone(BIG_SOUND_AO_PIN);
 LinearHall linearHall(LH_MAGNETIC_AO_PIN);
 Motion motion(MOTION_PIN);
-GPS gps;
 Display display;
+
 void publish(const char *topic, int QoS = 0)
 {
-  Serial1.listen();
   mqtt.publish(topic, sensorValue, QoS);
 }
 
@@ -46,20 +49,20 @@ void setup()
 {
   pinMode(RELAY_PIN, OUTPUT);
   Serial.begin(9600);
-  // gps.setup();
+  gpsModule.setup();
   display.setup();
   initConnection();
   gyroscope.setup();
   display.started();
 }
-bool gpsOnlyMode = false;
+
 void loop()
 {
   if (mqtt.isConnected())
   {
     if (gpsOnlyMode)
     {
-      gps.measureValue(sensorValue);
+      gpsModule.measureValue(sensorValue);
       publish(gpsTopic);
     }
     else
@@ -68,20 +71,6 @@ void loop()
     }
   }
 
-  mqtt.loop();
-  if (strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
-  {
-    display.turnOff();
-  }
-  else if (strcmp(mqtt.receivedMessage, "send gps") == 0)
-  {
-    display.turnOff();
-    gpsOnlyMode = true;
-  }
-  else if (strcmp(mqtt.receivedMessage, "Apri tutto") == 0)
-  {
-    display.turnOn();
-  }
   if (gpsOnlyMode)
   {
     delay(1000);
@@ -90,11 +79,10 @@ void loop()
   {
     delay(5000);
   }
-}
 
-void serialEvent1()
-{
-  mqtt.serialEvent();
+  mqtt.loop();
+  checkStatus();
+  
 }
 
 void initConnection()
@@ -113,6 +101,10 @@ void initConnection()
 
 void publishSensors()
 {
+  gpsModule.measureValue(sensorValue);
+  Serial1.listen();
+  publish(gpsTopic);
+  delay(200);
   microphone.measureValue(sensorValue);
   publish(microphoneTopic);
   delay(200);
@@ -128,9 +120,22 @@ void publishSensors()
   linearHall.measureValue(sensorValue);
   publish(linearHallTopic);
   delay(200);
-  gps.measureValue(sensorValue);
-  publish(gpsTopic);
-  delay(200);
   motion.measureValue(sensorValue);
   publish(motionTopic);
+}
+
+void checkStatus(){
+  
+  if (strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
+  {
+    display.turnOff();
+  }
+  else if (strcmp(mqtt.receivedMessage, "send gps") == 0)
+  {
+    gpsOnlyMode = true;
+  }
+  else if (strcmp(mqtt.receivedMessage, "Apri tutto") == 0)
+  {
+    display.turnOn();
+  }
 }
