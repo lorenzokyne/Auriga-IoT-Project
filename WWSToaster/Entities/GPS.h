@@ -5,12 +5,18 @@
 #include "Arduino.h"
 #include <TinyGPS.h>
 
-SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); //arduino tx -> gps rx
+extern SoftwareSerial gpsSerial; //arduino tx -> gps rx
+
+TinyGPS gps;
+float LO1 = 41.095f;
+float HI1 = 41.096f;
+float LO2 = 16.862f;
+float HI2 = 16.863f;
+
 class GPS : Sensor
 {
 private:
     int rxPin;
-    TinyGPS gps;
 
 public:
     GPS() : Sensor(){};
@@ -22,21 +28,39 @@ public:
 
     void measureValue(char *value)
     {
-        gpsSerial.listen();
-        value[0] = '\0';
-        float lat = 0, lon = 0; // create variable for latitude and longitude
-        // Serial.println("Searching GPS signal...");
-        if (gpsSerial.available())
+        float lat = 41.095491, lon = 16.862459; // create variable for latitude and longitude
+        if (debugMode)
         {
-            // Serial.print("READ: " + gpsSerial.read()); // check for gps data
-            if (gps.encode(gpsSerial.read())) // encode gps data
-            {
-                gps.f_get_position(&lat, &lon); // get latitude and longitude
-            }
+            lat = LO1 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI1 - LO1)));
+            lon = LO2 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI2 - LO2)));
         }
-        String latitude = String(lat, 6);
-        String longitude = String(lon, 6);
+        else
+        {
+            gpsSerial.listen();
+            value[0] = '\0';
+
+            unsigned long age;
+
+            smartdelay(1000);
+            gps.satellites();
+            gps.hdop();
+            gps.f_get_position(&lat, &lon, &age);
+        }
+        char latitude[12];
+        char longitude[12];
+        dtostrf(lat, 11, 6, latitude);
+        dtostrf(lon, 11, 6, longitude);
         int len = sprintf(value, "GPS:Lat:%s;Lon:%s", latitude, longitude);
         value[len] = '\0';
+    }
+
+    static void smartdelay(unsigned long ms)
+    {
+        unsigned long start = millis();
+        do
+        {
+            while (gpsSerial.available())
+                gps.encode(gpsSerial.read());
+        } while (millis() - start < ms);
     }
 };

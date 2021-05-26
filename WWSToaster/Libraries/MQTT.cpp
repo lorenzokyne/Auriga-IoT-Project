@@ -33,7 +33,6 @@ bool MQTT::isConnected()
 
 bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const char *MQTTPassword)
 {
-    Serial1.listen();
     while (Serial1.available())
         Serial1.read();
 
@@ -92,7 +91,6 @@ bool MQTT::connect(const char *MQTTClientID, const char *MQTTUsername, const cha
 
 bool MQTT::publish(const char *MQTTTopic, char *MQTTMessage, uint8_t qos)
 {
-    Serial1.listen();
     OUT->println(F(" "));
     OUT->println(F("Publishing data..."));
     char packetid[30], str1[50], message[150];
@@ -201,7 +199,7 @@ bool MQTT::disconnect()
 
 void MQTT::loop()
 {
-    //ping();
+    ping();
     serialEvent();
 }
 
@@ -342,7 +340,8 @@ void MQTT::serialEvent()
                 count++;
             }
             temp[count] = '\0';
-            if(count == lenght){
+            if (count == lenght)
+            {
                 strcpy(receivedMessage, temp);
             }
             OUT->print(receivedMessage);
@@ -359,7 +358,7 @@ void MQTT::serialEvent()
                 OUT->print(code);
                 OUT->print(F(","));
                 OUT->print(code, HEX);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->println((char)code);
             }
             OUT->println(F("Message packet end"));
@@ -371,9 +370,9 @@ void MQTT::serialEvent()
             {
                 code = Serial1.read();
                 OUT->print(code);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->print(code, HEX);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->println((char)code);
             }
             OUT->println(F("Message packet end"));
