@@ -85,3 +85,8 @@ Queue Name | Type | Durability | Args | Binding | Description |
 **N.B.**: For MQTT communications you **MUST** use **'/'** instead of **'.'** in the routing keys.
 
 ### Elastic Stack
+
+1. [Elastic Installation Guide](https://github.com/lorenzokyne/Auriga-IoT-Project/tree/main/Elasticsearch)
+2. [Kibana Installation Guide](https://github.com/lorenzokyne/Auriga-IoT-Project/tree/main/Kibana)
+3. [Logstash Installation Guide](https://github.com/lorenzokyne/Auriga-IoT-Project/tree/main/Logstash)
+
