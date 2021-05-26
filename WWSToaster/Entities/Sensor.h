@@ -11,7 +11,8 @@ const int BIG_SOUND_AO_PIN = A2;
 const int PHOTO_RES_PIN = A3;
 const int GYRO_SDA_PIN = A4;
 const int GYRO_SCL_PIN = A5;
-
+#include <time.h>
+bool debugMode = false;
 class Sensor
 {
 protected:
@@ -21,7 +22,8 @@ public:
     Sensor(int pin)
     {
         this->pin = pin;
+        debugMode = false;
     };
     Sensor(){};
-    virtual void measureValue(char * value);
+    virtual void measureValue(char *value);
 };

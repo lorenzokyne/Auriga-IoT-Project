@@ -199,7 +199,7 @@ bool MQTT::disconnect()
 
 void MQTT::loop()
 {
-    //ping();
+    ping();
     serialEvent();
 }
 
@@ -358,7 +358,7 @@ void MQTT::serialEvent()
                 OUT->print(code);
                 OUT->print(F(","));
                 OUT->print(code, HEX);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->println((char)code);
             }
             OUT->println(F("Message packet end"));
@@ -370,9 +370,9 @@ void MQTT::serialEvent()
             {
                 code = Serial1.read();
                 OUT->print(code);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->print(code, HEX);
-                OUT->print(",");
+                OUT->print(F(","));
                 OUT->println((char)code);
             }
             OUT->println(F("Message packet end"));

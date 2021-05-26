@@ -22,7 +22,7 @@ const char *microphoneTopic = "atm/microphone/value";
 const char *linearHallTopic = "atm/linearhall/value";
 const char *gpsTopic = "atm/gps/value";
 const char *motionTopic = "atm/motion/value";
-char sensorValue[100];
+char sensorValue[90];
 
 SoftwareSerial Serial1(SIM_TX_PIN, SIM_RX_PIN);
 SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); //arduino tx -> gps rx
@@ -47,6 +47,7 @@ void publish(const char *topic, int QoS = 0)
 
 void setup()
 {
+  srand(static_cast<unsigned>(time(0)));
   pinMode(RELAY_PIN, OUTPUT);
   Serial.begin(9600);
   gpsModule.setup();
@@ -125,17 +126,23 @@ void publishSensors()
 }
 
 void checkStatus(){
-  
-  if (strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
+  if (linearHall.checkThreshold() || strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
   {
     display.turnOff();
   }
   else if (strcmp(mqtt.receivedMessage, "send gps") == 0)
   {
     gpsOnlyMode = true;
+    display.turnOff();
   }
   else if (strcmp(mqtt.receivedMessage, "Apri tutto") == 0)
   {
     display.turnOn();
+    mqtt.receivedMessage[0]='\0';
+  }
+  else if (strcmp(mqtt.receivedMessage, "debug") == 0)
+  {
+    debugMode=!debugMode;
+    mqtt.receivedMessage[0]='\0';
   }
 }

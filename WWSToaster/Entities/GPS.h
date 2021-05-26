@@ -8,6 +8,10 @@
 extern SoftwareSerial gpsSerial; //arduino tx -> gps rx
 
 TinyGPS gps;
+float LO1 = 41.095f;
+float HI1 = 41.096f;
+float LO2 = 16.862f;
+float HI2 = 16.863f;
 
 class GPS : Sensor
 {
@@ -24,15 +28,24 @@ public:
 
     void measureValue(char *value)
     {
-        gpsSerial.listen();
-        value[0] = '\0';
         float lat = 41.095491, lon = 16.862459; // create variable for latitude and longitude
-        unsigned long age;
+        if (debugMode)
+        {
+            lat = LO1 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI1 - LO1)));
+            lon = LO2 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI2 - LO2)));
+        }
+        else
+        {
+            gpsSerial.listen();
+            value[0] = '\0';
 
-        smartdelay(1000);
-        gps.satellites();
-        gps.hdop();
-        gps.f_get_position(&lat, &lon, &age);
+            unsigned long age;
+
+            smartdelay(1000);
+            gps.satellites();
+            gps.hdop();
+            gps.f_get_position(&lat, &lon, &age);
+        }
         char latitude[12];
         char longitude[12];
         dtostrf(lat, 11, 6, latitude);
