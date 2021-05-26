@@ -23,7 +23,8 @@ namespace Consumer.Observables
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Received: {0}", message);
-                float value = float.Parse(message.Split(':')[1].Split(',')[0], NumberStyles.Any, CultureInfo.InvariantCulture);
+                float value = 0;
+                float.TryParse(message.Split(':')[1].Split(',')[0], NumberStyles.Any, CultureInfo.InvariantCulture, out value);
                 this.UpdateValue(value);
                 Console.WriteLine("Done");
                 channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);

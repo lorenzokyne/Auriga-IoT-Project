@@ -22,7 +22,7 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (noise.Value > 0 && noise.Value < 500 && brightness.Value > 0 && brightness.Value < 200)
+                    if (noise.Value > 0 && noise.Value < 500 && brightness.Value > 0 && brightness.Value < 400)
                     {
                         Console.WriteLine("Second Rule verified!");
                         string message = "Stacca stacca!";
@@ -30,10 +30,6 @@ namespace Consumer
                         noise.Value = 0;
                         brightness.Value = 0;
                     }
-                    //else
-                    //{
-                    //    new Producer.Producer("Apri tutto");
-                    //}
                     Thread.Sleep(5000);
                 }
             }).Start();

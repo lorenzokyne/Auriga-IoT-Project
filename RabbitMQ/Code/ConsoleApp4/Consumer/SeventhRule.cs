@@ -9,7 +9,6 @@ namespace Consumer
 
     class SeventhRule
     {
-
         public SeventhRule(IObservable<Gyroscope> gyroscopeSensor)
         {
             GyroscopeObserver gyroscope = new GyroscopeObserver();
@@ -19,7 +18,7 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (gyroscope.Value.GyX>10000 || gyroscope.Value.GyY > 10000||gyroscope.Value.GyZ > 10000)
+                    if ((gyroscope.Value.GyX>10000 || gyroscope.Value.GyY > 10000||gyroscope.Value.GyZ > 10000) || (gyroscope.Value.GyX < -10000 || gyroscope.Value.GyY < -10000 || gyroscope.Value.GyZ < -10000))
                     {
                         Console.WriteLine("Seventh Rule verified!");
                         string message = "send gps";

@@ -22,7 +22,7 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (motion.Value == true && temperature.Value > 60 )
+                    if (motion.Value == true && temperature.Value > 59.0f )
                     {
                         Console.WriteLine("Third Rule verified!");
                         string message = "Stacca stacca!";
@@ -30,10 +30,6 @@ namespace Consumer
                         motion.Value = false;
                         temperature.Value = 0;
                     }
-                    //else
-                    //{
-                    //    new Producer.Producer("Apri tutto");
-                    //}
                     Thread.Sleep(5000);
                 }
             }).Start();
