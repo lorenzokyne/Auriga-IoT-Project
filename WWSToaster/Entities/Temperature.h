@@ -19,7 +19,8 @@ public:
     void measureValue(char *value)
     {
         // TEMP AND HUMIDITY SENSOR °C
-        char str_temp[7], str_hum[7];
+        value[0]='\0';
+        char str_temp[6], str_hum[6];
         float temp = dht_sensor.readTemperature();
         float hum = dht_sensor.readHumidity();
         dtostrf(temp, 4, 2, str_temp);

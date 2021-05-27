@@ -22,7 +22,6 @@ const char *microphoneTopic = "atm/microphone/value";
 const char *linearHallTopic = "atm/linearhall/value";
 const char *gpsTopic = "atm/gps/value";
 const char *motionTopic = "atm/motion/value";
-char sensorValue[90];
 
 void(* Reset)(void) = 0;
 SoftwareSerial Serial1(SIM_TX_PIN, SIM_RX_PIN);
@@ -41,7 +40,7 @@ LinearHall linearHall(LH_MAGNETIC_AO_PIN);
 Motion motion(MOTION_PIN);
 Display display;
 
-void publish(const char *topic, int QoS = 0)
+void publish(const char *topic, char* sensorValue, int QoS = 0)
 {
   mqtt.publish(topic, sensorValue, QoS);
 }
@@ -60,16 +59,17 @@ void setup()
 
 void loop()
 {
+  char sensorValue[90];
   if (mqtt.isConnected())
   {
     if (gpsOnlyMode)
     {
       gpsModule.measureValue(sensorValue);
-      publish(gpsTopic);
+      publish(gpsTopic, sensorValue);
     }
     else
     {
-      publishSensors();
+      publishSensors(sensorValue);
     }
   }
 
@@ -104,29 +104,29 @@ void initConnection()
   }
 }
 
-void publishSensors()
+void publishSensors(char* sensorValue)
 {
   gpsModule.measureValue(sensorValue);
   Serial1.listen();
-  publish(gpsTopic);
+  publish(gpsTopic, sensorValue);
   delay(200);
   microphone.measureValue(sensorValue);
-  publish(microphoneTopic);
+  publish(microphoneTopic, sensorValue);
   delay(200);
   brightness.measureValue(sensorValue);
-  publish(brightnessTopic);
-  // delay(200);
-  // temperature.measureValue(sensorValue);
-  // publish(temperatureTopic);
+  publish(brightnessTopic, sensorValue);
+  delay(200);
+  temperature.measureValue(sensorValue);
+  publish(temperatureTopic, sensorValue);
   delay(200);
   gyroscope.measureValue(sensorValue);
-  publish(gyroTopic);
+  publish(gyroTopic, sensorValue);
   delay(200);
   linearHall.measureValue(sensorValue);
-  publish(linearHallTopic);
+  publish(linearHallTopic, sensorValue);
   delay(200);
   motion.measureValue(sensorValue);
-  publish(motionTopic);
+  publish(motionTopic, sensorValue);
 }
 
 void checkStatus()

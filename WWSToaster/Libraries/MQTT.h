@@ -31,7 +31,6 @@ private:
     const unsigned int MQTTKeepAlive = 60;
     const char MQTTQOS = 0x00;
     SIM8000 sim800;
-    uint8_t packetType = 0;
     bool _isConnected = false;
 
     char *server;

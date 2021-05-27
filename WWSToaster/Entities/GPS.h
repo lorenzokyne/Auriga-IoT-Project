@@ -29,6 +29,7 @@ public:
     void measureValue(char *value)
     {
         float lat = 41.095491, lon = 16.862459; // create variable for latitude and longitude
+        value[0] = '\0';
         if (debugMode)
         {
             lat = LO1 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (HI1 - LO1)));
@@ -37,8 +38,6 @@ public:
         else
         {
             gpsSerial.listen();
-            value[0] = '\0';
-
             unsigned long age;
 
             smartdelay(1000);
@@ -54,7 +53,7 @@ public:
         value[len] = '\0';
     }
 
-    static void smartdelay(unsigned long ms)
+    static void smartdelay(unsigned int ms)
     {
         unsigned long start = millis();
         do

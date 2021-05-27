@@ -3,7 +3,6 @@
 #include "Arduino.h"
 #include "MQTT.h"
 
-uint8_t i = 0;
 extern SoftwareSerial Serial1;
 MQTT::MQTT(char *server, int port)
 {
@@ -187,7 +186,6 @@ bool MQTT::subscribe(char *MQTTTopic)
 
 bool MQTT::ping()
 {
-    packetType = PINGREQ;
     Serial1.write(0xC0);
     Serial1.write((uint8_t)0x00);
 }
@@ -206,7 +204,6 @@ void MQTT::loop()
 void MQTT::serialEvent()
 {
     OUT->println(F("\nBegin"));
-    int X;
     unsigned char code;
     unsigned char encodedByte;
     unsigned long multiplier = 1;

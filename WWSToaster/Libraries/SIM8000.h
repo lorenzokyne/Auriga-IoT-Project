@@ -11,7 +11,6 @@ class SIM8000
 private:
     int8_t mode = 0;
     int8_t sendATcommand(char *ATcommand, char *expected_answer, unsigned int timeout);
-    bool isRecMode;
     Stream *OUT;
 
 public:
