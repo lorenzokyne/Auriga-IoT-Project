@@ -8,7 +8,6 @@ namespace Consumer
 
     class SixthRule
     {
-
         public SixthRule(IObservable<Tuple<float,float>> gpsSensor)
         {
             GpsObserver gps = new GpsObserver();
