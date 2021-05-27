@@ -20,19 +20,14 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (motion.Value == true && noise.Value < 500)
+                    if (motion.Value == true && noise.Value>0 && noise.Value < 500)
                     {
                         Console.WriteLine("Fourth Rule verified!");
                         string message = "Stacca stacca!";
-                        message = message.Length.ToString().PadLeft(2, '0') + message;
                         new Producer.Producer(message);
                         motion.Value = false;
                         noise.Value = 0;
                     }
-                    //else
-                    //{
-                    //    new Producer.Producer("Apri tutto");
-                    //}
                     Thread.Sleep(5000);
                 }
             }).Start();

@@ -8,7 +8,6 @@ namespace Consumer
 
     class SixthRule
     {
-
         public SixthRule(IObservable<Tuple<float,float>> gpsSensor)
         {
             GpsObserver gps = new GpsObserver();
@@ -18,17 +17,12 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (gps.Value.Item1!= 0 || gps.Value.Item2 != 0)
+                    if ((gps.Value != null) && (gps.Value.Item1!= 0 || gps.Value.Item2 != 0) && (gps.Value.Item1 != 1000 && gps.Value.Item2 != 1000))
                     {
                         Console.WriteLine("Sixth Rule verified!");
                         string message = "send gps";
-                        message = message.Length.ToString().PadLeft(2, '0') + message;
                         new Producer.Producer(message);
                     }
-                    //else
-                    //{
-                    //    new Producer.Producer("Apri tutto");
-                    //}
                     Thread.Sleep(5000);
                 }
             }).Start();

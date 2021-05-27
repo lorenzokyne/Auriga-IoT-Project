@@ -25,7 +25,7 @@ namespace Consumer.Observers
         public virtual void OnNext(float value)
         {
             this.Value = value;
-            Console.WriteLine("The current temperature is {0}", value);
+            Console.WriteLine("The current temperature is °C {0}", value);
         }
 
         public virtual void Unsubscribe()

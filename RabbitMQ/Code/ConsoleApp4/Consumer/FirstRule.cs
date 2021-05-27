@@ -20,19 +20,14 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (temperature.Value > 59.00f && (brightness.Value > 0 && brightness.Value < 200))
+                    if (temperature.Value > 20.0f && (brightness.Value > 0 && brightness.Value < 400))
                     {
                         Console.WriteLine("First Rule verified!");
                         string message = "Stacca stacca!";
-                        message = message.Length.ToString().PadLeft(2, '0') + message;
                         new Producer.Producer(message);
                         temperature.Value = 0;
                         brightness.Value = 0;
                     }
-                    //else
-                    //{
-                    //    new Producer.Producer("Apri tutto");
-                    //}
                     Thread.Sleep(5000);
                 }
             }).Start();

@@ -11,7 +11,7 @@ namespace Consumer
 
         public FifthRule(IObservable<int> jammerSensor)
         {
-            NoiseObserver jammer = new NoiseObserver();
+            JammerObserver jammer = new JammerObserver();
             MotionObserver motion = new MotionObserver();
             
             jammerSensor.Subscribe(jammer);
@@ -19,11 +19,10 @@ namespace Consumer
             {
                 while (true)
                 {
-                    if (jammer.Value < 400 || jammer.Value > 600)
+                    if (jammer.Value>0 && (jammer.Value < 400 || jammer.Value > 600))
                     {
-                        Console.WriteLine("Second Rule verified!");
+                        Console.WriteLine("Fifth Rule verified!");
                         string message = "Stacca stacca!";
-                        message = message.Length.ToString().PadLeft(2, '0') + message;
                         new Producer.Producer(message);
                         jammer.Value = 500;
                     }

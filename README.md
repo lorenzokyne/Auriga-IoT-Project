@@ -35,15 +35,6 @@ When one of this rules is satisfied the ATM must be switched in a "GPS only" mod
 ### Other types of Attacks
 There are other types of attacks like Man-in Middle attack, Data Sniffing Attacks, Skimming with Spoofing. Those attacks target customers instead of banks. 
 
-## Devices
-- [Modulo GSM GSM GPRS SIM800L](https://www.amazon.it/gp/product/B07X2634ZQ/ref=ox_sc_act_title_1?smid=A2BQVM41SWSLKR&psc=1)
-- [Aideepen 2PCS GY-GPS6MV2 NEO-6M Modulo di Posizione Modulo GPS](https://www.amazon.it/gp/product/B08CZSL193/ref=ox_sc_act_title_2?smid=AUN6EYX254ETV&psc=1)
-- [AZDelivery Jumper Wire Cavetti](https://www.amazon.it/gp/product/B074P726ZR/ref=ox_sc_act_title_3?smid=A1X7QLRQH87QA3&psc=1)
-- [Elegoo Progetto Starter Kit Basic](https://www.amazon.it/gp/product/B06XSFF7MG/ref=ox_sc_act_title_4?smid=AZF7WYXU5ZANW&psc=1)
-- [Elegoo 37-in-1 Kit Modulo Sensore Elettronici](https://www.amazon.it/gp/product/B01N79PG4G/ref=ox_sc_act_title_5?smid=AZF7WYXU5ZANW&psc=1)
-- [Caricabatterie USB Amazon da 5](https://www.amazon.it/gp/product/B01J2G52O6/ref=crt_ewc_title_dp_1?ie=UTF8&psc=1&smid=A11IL2PNWYJU7H)
-- [POSUGEAR Power Bank 10000mAh](https://www.amazon.it/gp/product/B07WVVTK86/ref=crt_ewc_title_dp_2?ie=UTF8&psc=1&smid=A1F8R6XWWYQ81U)
-
 ## Architecture
 The following diagram shows the architecture that must be implemented in order to satisfy the project's requirements. Basically, it is composed of three parts.
 - The IoT devices located on the ATMs (Arduino).
@@ -52,15 +43,34 @@ The following diagram shows the architecture that must be implemented in order t
 
 ![Architecture Diagram](docs/diagrams/architecture-diagram.png)
 
-### Arduino
+## Arduino
+### Devices
+- [Modulo GSM GSM GPRS SIM800L](https://www.amazon.it/gp/product/B07X2634ZQ/ref=ox_sc_act_title_1?smid=A2BQVM41SWSLKR&psc=1)
+- [Aideepen 2PCS GY-GPS6MV2 NEO-6M Modulo di Posizione Modulo GPS](https://www.amazon.it/gp/product/B08CZSL193/ref=ox_sc_act_title_2?smid=AUN6EYX254ETV&psc=1)
+- [AZDelivery Jumper Wire Cavetti](https://www.amazon.it/gp/product/B074P726ZR/ref=ox_sc_act_title_3?smid=A1X7QLRQH87QA3&psc=1)
+- [Elegoo Progetto Starter Kit Basic](https://www.amazon.it/gp/product/B06XSFF7MG/ref=ox_sc_act_title_4?smid=AZF7WYXU5ZANW&psc=1)
+- [Elegoo 37-in-1 Kit Modulo Sensore Elettronici](https://www.amazon.it/gp/product/B01N79PG4G/ref=ox_sc_act_title_5?smid=AZF7WYXU5ZANW&psc=1)
+- [Caricabatterie USB Amazon da 5](https://www.amazon.it/gp/product/B01J2G52O6/ref=crt_ewc_title_dp_1?ie=UTF8&psc=1&smid=A11IL2PNWYJU7H)
+- [POSUGEAR Power Bank 10000mAh](https://www.amazon.it/gp/product/B07WVVTK86/ref=crt_ewc_title_dp_2?ie=UTF8&psc=1&smid=A1F8R6XWWYQ81U)
 
+Sensors and modules used are listed below:
+Device Name | Description | Image |
+----------- | ---- | ---- |
+| DHT11 | Temperature and humidity  | ![DHT11](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXoLr_MQyqp8gMzASJTsV-W9KHsdzQB9bk3-827WlC8Ia2dTTa6z4k4sOV5yxlPgg3aipy70A&usqp=CAc)|
+Light Dependent Resistor (KY-018)| Light sensitive device to indicate the presence or absence of light |![LDR](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoU-AWmfHpAG2Ut8emlK8lVdOX8DV3dBuAgg&usqp=CAU)| 
+Small sound (KY-038)| High sensitivity microphone | ![SMALLSOUND](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpsook1qgoqe9tMGWd8zpoRaXVtVrrDaie8w&usqp=CAU)|
+Linear hall (KY-024)| Magnetic field sensor | ![LINEARHALL](https://m.media-amazon.com/images/I/51dYl3lyf9L._SL500_.jpg) |
+GY-521 (MPU6050) | Gyroscope and accelerometer | ![GY-521](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw8TlRLn2BiPwtlNWAN4pIl9GxZgifd7yRtw&usqp=CAU)|
+HC SR501 PIR Sensor | Simple motion sensor | ![MOTION](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0-ztFMD6WWQAurv4vxpok07YWg9vfpI0LuBDCg75cZXhaywxcmc1UaAi__uc&usqp=CAc)|
+GPS (6MV2) | GPS tracker module | ![GPS](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzIT1tedZRe3nUUl-kfZuR4E8ckIS8KJiGHQ&usqp=CAU)|
+GSM (SIM800L evb) | GSM/GPRS sim module | ![SIM](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRakkzNnlgnQFMCQNuhVcdJpwKhO4Ye0DRsrw&usqp=CAU) |
+LCD (liquid crystal) | 2 rows x 16 columns LCD | ![LCD](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl5fsdC_C8SFD_-icTI4li2nJbl3pOBg2RtQ&usqp=CAU)
+
+### Schematics
 In order to ensure the full compatibility with our project, we suggest you to apply a wiring following our schematics.
-
-#### Schematics
-
 ![Arduino schematics](docs/diagrams/arduino-schematics.jpg)
 
-### RabbitMQ
+## RabbitMQ
 
 After you installed RabbitMQ you should already have the following default exchange (which is the default exchange for MQTT communication), if not you must create a new exchange with the following attributes:
 - **Name**: amq.topic
@@ -84,7 +94,7 @@ Queue Name | Type | Durability | Args | Binding | Description |
 
 **N.B.**: For MQTT communications you **MUST** use **'/'** instead of **'.'** in the routing keys.
 
-### Elastic Stack
+## Elastic Stack
 
 1. [Elastic Installation Guide](https://github.com/lorenzokyne/Auriga-IoT-Project/tree/main/Elasticsearch)
 2. [Kibana Installation Guide](https://github.com/lorenzokyne/Auriga-IoT-Project/tree/main/Kibana)

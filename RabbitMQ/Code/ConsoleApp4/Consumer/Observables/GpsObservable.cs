@@ -2,6 +2,7 @@
 using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Consumer.Observables
@@ -21,9 +22,9 @@ namespace Consumer.Observables
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine("Received: {0}", message);
-                string gpsValues = message.Split(':')[1];
-                float lat = float.Parse(gpsValues.Split(';')[0].Split(':')[1]);
-                float lon = float.Parse(message.Split(';')[1].Split(':')[1]);
+                string[] gpsValues = message.Split(';');
+                float lat = float.Parse(gpsValues[0].Split(':')[2],NumberStyles.Any, CultureInfo.InvariantCulture);
+                float lon = float.Parse(gpsValues[1].Split(':')[1], NumberStyles.Any, CultureInfo.InvariantCulture);
                 this.UpdateValue(new Tuple<float, float>(lat,lon));
                 Console.WriteLine("Done");
 
