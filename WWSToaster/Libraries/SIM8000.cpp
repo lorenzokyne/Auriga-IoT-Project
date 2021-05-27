@@ -45,6 +45,7 @@ bool SIM8000::initialize(uint8_t mode, Stream *out)
     if (initNetwork())
       break;
     OUT->println(F("Network initialize failed.."));
+    closeTCP();
     retryCount++;
   }
 
@@ -189,12 +190,12 @@ bool SIM8000::getIPAddress()
 void SIM8000::resetModem()
 {
 #ifdef debug
-  OUT->println(F("Resetting Modem... please wait for 10 seconds.."));
+  OUT->println(F("Resetting Modem... please wait"));
 #endif
   digitalWrite(RESET_PIN, LOW);
   delay(100);
   digitalWrite(RESET_PIN, HIGH);
-  delay(15000);
+  delay(5000);
 };
 
 char *SIM8000::getTCPStatus()

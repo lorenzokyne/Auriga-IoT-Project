@@ -96,7 +96,8 @@ void initConnection()
   }
   else
   {
-    mqtt.OUT->println(F("Unable to connect to the network.."));
+    mqtt.OUT->println(F("Unable to connect to the network...retrying"));
+    initConnection();
   }
 }
 
@@ -111,9 +112,9 @@ void publishSensors()
   delay(200);
   brightness.measureValue(sensorValue);
   publish(brightnessTopic);
-  delay(200);
-  temperature.measureValue(sensorValue);
-  publish(temperatureTopic);
+  // delay(200);
+  // temperature.measureValue(sensorValue);
+  // publish(temperatureTopic);
   delay(200);
   gyroscope.measureValue(sensorValue);
   publish(gyroTopic);
