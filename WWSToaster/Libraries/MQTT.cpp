@@ -292,6 +292,10 @@ void MQTT::serialEvent()
                 OUT->print((char)Serial1.read());
             }
         }
+        else if (code == 0x0D)
+        {
+            _isConnected = false;
+        }
         else if (code == 0x30) //Message Received
         {
             OUT->println(F("Message Begin..."));

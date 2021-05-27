@@ -24,6 +24,7 @@ const char *gpsTopic = "atm/gps/value";
 const char *motionTopic = "atm/motion/value";
 char sensorValue[90];
 
+void(* Reset)(void) = 0;
 SoftwareSerial Serial1(SIM_TX_PIN, SIM_RX_PIN);
 SoftwareSerial gpsSerial(GPS_TX_PIN, GPS_RX_PIN); //arduino tx -> gps rx
 MQTT mqtt((char *)SERVER_ADDRESS, (int)SERVER_PORT, Serial);
@@ -83,7 +84,9 @@ void loop()
 
   mqtt.loop();
   checkStatus();
-  
+  if (!mqtt.isConnected()){
+    Reset();
+  }
 }
 
 void initConnection()
@@ -126,7 +129,8 @@ void publishSensors()
   publish(motionTopic);
 }
 
-void checkStatus(){
+void checkStatus()
+{
   if (linearHall.checkThreshold() || strcmp(mqtt.receivedMessage, "Stacca stacca!") == 0)
   {
     display.turnOff();
@@ -139,11 +143,11 @@ void checkStatus(){
   else if (strcmp(mqtt.receivedMessage, "Apri tutto") == 0)
   {
     display.turnOn();
-    mqtt.receivedMessage[0]='\0';
+    mqtt.receivedMessage[0] = '\0';
   }
   else if (strcmp(mqtt.receivedMessage, "debug") == 0)
   {
-    debugMode=!debugMode;
-    mqtt.receivedMessage[0]='\0';
+    debugMode = !debugMode;
+    mqtt.receivedMessage[0] = '\0';
   }
 }
