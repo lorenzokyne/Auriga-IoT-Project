@@ -9,7 +9,7 @@
 #include "Entities\Display.h"
 #include "Entities\Motion.h"
 //Environment vars
-const char *SERVER_ADDRESS = "93.63.173.7";
+const char *SERVER_ADDRESS = "SERVER ADDRESS HERE";
 const int SERVER_PORT = 1883;
 const char *clientName = "WWSToaster-00";
 const char *username = "atm";
