@@ -54,6 +54,7 @@ The following diagram shows the architecture that must be implemented in order t
 - [POSUGEAR Power Bank 10000mAh](https://www.amazon.it/gp/product/B07WVVTK86/ref=crt_ewc_title_dp_2?ie=UTF8&psc=1&smid=A1F8R6XWWYQ81U)
 
 Sensors and modules used are listed below:
+
 Device Name | Description | Image |
 ----------- | ---- | ---- |
 | DHT11 | Temperature and humidity  | ![DHT11](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXoLr_MQyqp8gMzASJTsV-W9KHsdzQB9bk3-827WlC8Ia2dTTa6z4k4sOV5yxlPgg3aipy70A&usqp=CAc)|
