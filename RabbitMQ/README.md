@@ -29,6 +29,8 @@ RabbitMQ rise as Windows service, you can start/stop it by the ‘service’ tab
 RabbitMQ service provide server side management console that can be useful to understand how it does creates queues and binds them to exchanges. 
 
 Local address[ http://localhost:15672/ ](http://localhost:15672/)- user: guest pwd: guest 
+If the management console is not working, try to check if the enabled_plugins file in [user]\AppData\Roaming\RabbitMQ has the management console plugin enabled.
+If so, try to restart RabbitMQ service.
 
 In order to develop clients (both producers and consumers) we need a library for our programming language. 
 
